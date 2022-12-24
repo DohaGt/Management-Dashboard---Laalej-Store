@@ -16,11 +16,11 @@ module.exports = {
       {
         id: ids[0],
         firstName: 'Admin',
-        email: config.admin_email,
+        email:'d.guettioui@aui.ma',
         emailVerified: true,
         role: 'admin',
         provider: config.providers.LOCAL,
-        password: hash,
+        password:'AUI1234'
         createdAt: new Date(),
         updatedAt: new Date(),
       },
