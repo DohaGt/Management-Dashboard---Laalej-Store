@@ -1,3 +1,4 @@
+
 const db = require('../models');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
@@ -7,28 +8,37 @@ const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
 module.exports = class AdministratorDBApi {
+
   static async create(data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
-    const transaction = (options && options.transaction) || undefined;
+  const currentUser = (options && options.currentUser) || { id: null };
+  const transaction = (options && options.transaction) || undefined;
 
-    const administrator = await db.administrator.create(
-      {
-        id: data.id || undefined,
+  const administrator = await db.administrator.create(
+  {
+  id: data.id || undefined,
 
-        password: data.password || null,
-        employeeID: data.employeeID || null,
-        importHash: data.importHash || null,
-        createdById: currentUser.id,
-        updatedById: currentUser.id,
-      },
-      { transaction },
-    );
+    password: data.password
+    ||
+    null
+,
 
-    return administrator;
+    employeeID: data.employeeID
+    ||
+    null
+,
+
+  importHash: data.importHash || null,
+  createdById: currentUser.id,
+  updatedById: currentUser.id,
+  },
+  { transaction },
+  );
+
+  return administrator;
   }
 
   static async update(id, data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const administrator = await db.administrator.findByPk(id, {
@@ -37,33 +47,39 @@ module.exports = class AdministratorDBApi {
 
     await administrator.update(
       {
-        password: data.password || null,
-        employeeID: data.employeeID || null,
+
+        password: data.password
+        ||
+        null
+,
+
+        employeeID: data.employeeID
+        ||
+        null
+,
+
         updatedById: currentUser.id,
       },
-      { transaction },
+      {transaction},
     );
 
     return administrator;
   }
 
   static async remove(id, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const administrator = await db.administrator.findByPk(id, options);
 
-    await administrator.update(
-      {
-        deletedBy: currentUser.id,
-      },
-      {
-        transaction,
-      },
-    );
+    await administrator.update({
+      deletedBy: currentUser.id
+    }, {
+      transaction,
+    });
 
     await administrator.destroy({
-      transaction,
+      transaction
     });
 
     return administrator;
@@ -81,7 +97,7 @@ module.exports = class AdministratorDBApi {
       return administrator;
     }
 
-    const output = administrator.get({ plain: true });
+    const output = administrator.get({plain: true});
 
     return output;
   }
@@ -97,7 +113,9 @@ module.exports = class AdministratorDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [];
+    let include = [
+
+    ];
 
     if (filter) {
       if (filter.id) {
@@ -110,7 +128,11 @@ module.exports = class AdministratorDBApi {
       if (filter.password) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('administrator', 'password', filter.password),
+          [Op.and]: Utils.ilike(
+            'administrator',
+            'password',
+            filter.password,
+          ),
         };
       }
 
@@ -146,7 +168,9 @@ module.exports = class AdministratorDBApi {
       ) {
         where = {
           ...where,
-          active: filter.active === true || filter.active === 'true',
+          active:
+            filter.active === true ||
+            filter.active === 'true',
         };
       }
 
@@ -175,23 +199,24 @@ module.exports = class AdministratorDBApi {
       }
     }
 
-    let { rows, count } = await db.administrator.findAndCountAll({
-      where,
-      include,
-      distinct: true,
-      limit: limit ? Number(limit) : undefined,
-      offset: offset ? Number(offset) : undefined,
-      order:
-        filter.field && filter.sort
+    let { rows, count } = await db.administrator.findAndCountAll(
+      {
+        where,
+        include,
+        distinct: true,
+        limit: limit ? Number(limit) : undefined,
+        offset: offset ? Number(offset) : undefined,
+        order: (filter.field && filter.sort)
           ? [[filter.field, filter.sort]]
           : [['createdAt', 'desc']],
-      transaction,
-    });
+        transaction,
+      },
+    );
 
-    //    rows = await this._fillWithRelationsAndFilesForRows(
-    //      rows,
-    //      options,
-    //    );
+//    rows = await this._fillWithRelationsAndFilesForRows(
+//      rows,
+//      options,
+//    );
 
     return { rows, count };
   }
@@ -203,13 +228,17 @@ module.exports = class AdministratorDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('administrator', 'id', query),
+          Utils.ilike(
+            'administrator',
+            'id',
+            query,
+          ),
         ],
       };
     }
 
     const records = await db.administrator.findAll({
-      attributes: ['id', 'id'],
+      attributes: [ 'id', 'id' ],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['id', 'ASC']],
@@ -220,4 +249,6 @@ module.exports = class AdministratorDBApi {
       label: record.id,
     }));
   }
+
 };
+

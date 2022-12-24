@@ -7,6 +7,6 @@ const AdminhistoryTablePage = () => {
       <AdminhistoryTable />
     </div>
   );
-};
+}
 
 export default AdminhistoryTablePage;

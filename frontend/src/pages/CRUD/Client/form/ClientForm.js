@@ -26,120 +26,155 @@ import FormValidations from 'components/FormItems/formValidations';
 import Widget from 'components/Widget';
 
 const ClientForm = (props) => {
+
   const {
-    isEditing,
-    isProfile,
-    findLoading,
-    saveLoading,
-    record,
-    onSubmit,
-    onCancel,
-    modal,
+  isEditing,
+  isProfile,
+  findLoading,
+  saveLoading,
+  record,
+  onSubmit,
+  onCancel,
+  modal
   } = props;
 
   const iniValues = () => {
-    return IniValues(clientFields, record || {});
-  };
+  return IniValues(clientFields, record || {});
+  }
 
   const formValidations = () => {
-    return FormValidations(clientFields, record || {});
-  };
+  return FormValidations(clientFields, record || {});
+  }
 
   const handleSubmit = (values) => {
-    const { id, ...data } = PreparedValues(clientFields, values || {});
-    onSubmit(id, data);
+  const { id, ...data } = PreparedValues(clientFields, values || {});
+  onSubmit(id, data);
   };
 
   const title = () => {
-    if (isProfile) {
-      return 'Edit My Profile';
-    }
+  if(isProfile) {
+  return 'Edit My Profile';
+  }
 
-    return isEditing ? 'Edit Client' : 'Add Client';
+  return isEditing
+  ? 'Edit Client'
+  : 'Add Client';
   };
 
   const renderForm = () => (
-    <Widget title={<h4>{title()}</h4>} collapse close>
-      <Formik
-        onSubmit={handleSubmit}
-        initialValues={iniValues()}
-        validationSchema={formValidations()}
+  <Widget title={<h4>{title()}</h4>} collapse close>
+  <Formik
+          onSubmit={handleSubmit}
+  initialValues={iniValues()}
+  validationSchema={formValidations()}
+  >
+  {(form) => (
+  <form onSubmit={form.handleSubmit}>
+    <Grid container spacing={3} direction="column">
+
+      <Grid item>
+        <InputFormItem
+          name={'clientCode'}
+          schema={clientFields}
+        />
+      </Grid>
+
+      <Grid item>
+        <InputFormItem
+          name={'lastName'}
+          schema={clientFields}
+
+        />
+      </Grid>
+
+      <Grid item>
+        <InputFormItem
+          name={'firstName'}
+          schema={clientFields}
+
+        />
+      </Grid>
+
+      <Grid item>
+        <InputFormItem
+          name={'zipCode'}
+          schema={clientFields}
+        />
+      </Grid>
+
+      <Grid item>
+        <InputFormItem
+          name={'phoneNumber'}
+          schema={clientFields}
+
+        />
+      </Grid>
+
+      <Grid item>
+        <InputFormItem
+          name={'email'}
+          schema={clientFields}
+
+        />
+      </Grid>
+
+      <Grid item>
+        <InputFormItem
+          name={'balance'}
+          schema={clientFields}
+
+        />
+      </Grid>
+
+      <Grid item>
+        <InputFormItem
+          name={'employeeID'}
+          schema={clientFields}
+        />
+      </Grid>
+
+  </Grid>
+  <Grid container spacing={3} mt={2}>
+    <Grid item>
+      <Button
+        color="primary"
+        variant="contained"
+        onClick={form.handleSubmit}
       >
-        {(form) => (
-          <form onSubmit={form.handleSubmit}>
-            <Grid container spacing={3} direction='column'>
-              <Grid item>
-                <InputFormItem name={'clientCode'} schema={clientFields} />
-              </Grid>
-
-              <Grid item>
-                <InputFormItem name={'lastName'} schema={clientFields} />
-              </Grid>
-
-              <Grid item>
-                <InputFormItem name={'firstName'} schema={clientFields} />
-              </Grid>
-
-              <Grid item>
-                <InputFormItem name={'zipCode'} schema={clientFields} />
-              </Grid>
-
-              <Grid item>
-                <InputFormItem name={'phoneNumber'} schema={clientFields} />
-              </Grid>
-
-              <Grid item>
-                <InputFormItem name={'email'} schema={clientFields} />
-              </Grid>
-
-              <Grid item>
-                <InputFormItem name={'balance'} schema={clientFields} />
-              </Grid>
-
-              <Grid item>
-                <InputFormItem name={'employeeID'} schema={clientFields} />
-              </Grid>
-            </Grid>
-            <Grid container spacing={3} mt={2}>
-              <Grid item>
-                <Button
-                  color='primary'
-                  variant='contained'
-                  onClick={form.handleSubmit}
-                >
-                  Save
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button
-                  color='primary'
-                  variant='outlined'
-                  onClick={form.handleReset}
-                >
-                  Reset
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button
-                  color='primary'
-                  variant='outlined'
-                  onClick={() => onCancel()}
-                >
-                  Cancel
-                </Button>
-              </Grid>
-            </Grid>
-          </form>
-        )}
-      </Formik>
-    </Widget>
+        Save
+      </Button>
+    </Grid>
+    <Grid item>
+      <Button
+        color="primary"
+        variant="outlined"
+        onClick={form.handleReset}
+      >
+        Reset
+      </Button>
+    </Grid>
+    <Grid item>
+      <Button
+        color="primary"
+        variant="outlined"
+        onClick={() => onCancel()}
+      >
+        Cancel
+      </Button>
+    </Grid>
+  </Grid>
+      </form>
+      )
+      }
+    </Formik>
+  </Widget>
   );
   if (findLoading) {
-    return <Loader />;
+  return <Loader />;
   }
   if (isEditing && !record) {
-    return <Loader />;
+  return <Loader />;
   }
   return renderForm();
-};
-export default ClientForm;
+  }
+  export default ClientForm;

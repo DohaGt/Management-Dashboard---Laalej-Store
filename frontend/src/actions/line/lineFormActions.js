@@ -17,14 +17,14 @@ const actions = {
         type: 'LINE_FORM_FIND_STARTED',
       });
 
-      axios.get(`/line/${id}`).then((res) => {
+      axios.get(`/line/${id}`).then(res => {
         const record = res.data;
 
         dispatch({
           type: 'LINE_FORM_FIND_SUCCESS',
           payload: record,
         });
-      });
+      })
     } catch (error) {
       Errors.handle(error);
 
@@ -42,13 +42,13 @@ const actions = {
         type: 'LINE_FORM_CREATE_STARTED',
       });
 
-      axios.post('/line', { data: values }).then((res) => {
+      axios.post('/line', { data: values }).then(res => {
         dispatch({
           type: 'LINE_FORM_CREATE_SUCCESS',
         });
         showSnackbar({ type: 'success', message: 'Line created' });
         dispatch(push('/admin/line'));
-      });
+      })
     } catch (error) {
       Errors.handle(error);
 
@@ -58,13 +58,16 @@ const actions = {
     }
   },
 
-  doUpdate: (id, values, isProfile) => async (dispatch, getState) => {
+  doUpdate: (id, values, isProfile) => async (
+    dispatch,
+    getState,
+  ) => {
     try {
       dispatch({
         type: 'LINE_FORM_UPDATE_STARTED',
       });
 
-      await axios.put(`/line/${id}`, { id, data: values });
+      await axios.put(`/line/${id}`, {id, data: values});
 
       dispatch(doInit());
 

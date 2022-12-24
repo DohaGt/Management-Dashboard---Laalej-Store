@@ -7,6 +7,6 @@ const ProductTablePage = () => {
       <ProductTable />
     </div>
   );
-};
+}
 
 export default ProductTablePage;

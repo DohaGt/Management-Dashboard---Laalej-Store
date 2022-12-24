@@ -7,6 +7,6 @@ const AdministratorTablePage = () => {
       <AdministratorTable />
     </div>
   );
-};
+}
 
 export default AdministratorTablePage;

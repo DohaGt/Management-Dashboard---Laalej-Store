@@ -7,6 +7,6 @@ const LineTablePage = () => {
       <LineTable />
     </div>
   );
-};
+}
 
 export default LineTablePage;

@@ -50,7 +50,10 @@ const AdministratorSelectItem = (props) => {
     },
   };
 
-  const { form, ...rest } = props;
+  const {
+    form,
+    ...rest
+  } = props;
 
   return (
     <React.Fragment>
@@ -63,10 +66,12 @@ const AdministratorSelectItem = (props) => {
       />
     </React.Fragment>
   );
-};
+}
 
 const select = (state) => ({
-  hasPermissionToCreate: state.administrator.hasPermissionToCreate,
+  hasPermissionToCreate: state.administrator.hasPermissionToCreate
 });
 
-export default connect(select)(AdministratorSelectItem);
+export default connect(select)(
+  AdministratorSelectItem,
+);

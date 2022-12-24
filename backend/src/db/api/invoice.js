@@ -1,3 +1,4 @@
+
 const db = require('../models');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
@@ -7,30 +8,47 @@ const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
 module.exports = class InvoiceDBApi {
+
   static async create(data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
-    const transaction = (options && options.transaction) || undefined;
+  const currentUser = (options && options.currentUser) || { id: null };
+  const transaction = (options && options.transaction) || undefined;
 
-    const invoice = await db.invoice.create(
-      {
-        id: data.id || undefined,
+  const invoice = await db.invoice.create(
+  {
+  id: data.id || undefined,
 
-        invoiceNumber: data.invoiceNumber || null,
-        clientCode: data.clientCode || null,
-        invoiceDate: data.invoiceDate || null,
-        employeeID: data.employeeID || null,
-        importHash: data.importHash || null,
-        createdById: currentUser.id,
-        updatedById: currentUser.id,
-      },
-      { transaction },
-    );
+    invoiceNumber: data.invoiceNumber
+    ||
+    null
+,
 
-    return invoice;
+    clientCode: data.clientCode
+    ||
+    null
+,
+
+    invoiceDate: data.invoiceDate
+    ||
+    null
+,
+
+    employeeID: data.employeeID
+    ||
+    null
+,
+
+  importHash: data.importHash || null,
+  createdById: currentUser.id,
+  updatedById: currentUser.id,
+  },
+  { transaction },
+  );
+
+  return invoice;
   }
 
   static async update(id, data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const invoice = await db.invoice.findByPk(id, {
@@ -39,35 +57,49 @@ module.exports = class InvoiceDBApi {
 
     await invoice.update(
       {
-        invoiceNumber: data.invoiceNumber || null,
-        clientCode: data.clientCode || null,
-        invoiceDate: data.invoiceDate || null,
-        employeeID: data.employeeID || null,
+
+        invoiceNumber: data.invoiceNumber
+        ||
+        null
+,
+
+        clientCode: data.clientCode
+        ||
+        null
+,
+
+        invoiceDate: data.invoiceDate
+        ||
+        null
+,
+
+        employeeID: data.employeeID
+        ||
+        null
+,
+
         updatedById: currentUser.id,
       },
-      { transaction },
+      {transaction},
     );
 
     return invoice;
   }
 
   static async remove(id, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const invoice = await db.invoice.findByPk(id, options);
 
-    await invoice.update(
-      {
-        deletedBy: currentUser.id,
-      },
-      {
-        transaction,
-      },
-    );
+    await invoice.update({
+      deletedBy: currentUser.id
+    }, {
+      transaction,
+    });
 
     await invoice.destroy({
-      transaction,
+      transaction
     });
 
     return invoice;
@@ -76,13 +108,16 @@ module.exports = class InvoiceDBApi {
   static async findBy(where, options) {
     const transaction = (options && options.transaction) || undefined;
 
-    const invoice = await db.invoice.findOne({ where }, { transaction });
+    const invoice = await db.invoice.findOne(
+      { where },
+      { transaction },
+    );
 
     if (!invoice) {
       return invoice;
     }
 
-    const output = invoice.get({ plain: true });
+    const output = invoice.get({plain: true});
 
     return output;
   }
@@ -98,7 +133,9 @@ module.exports = class InvoiceDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [];
+    let include = [
+
+    ];
 
     if (filter) {
       if (filter.id) {
@@ -212,7 +249,9 @@ module.exports = class InvoiceDBApi {
       ) {
         where = {
           ...where,
-          active: filter.active === true || filter.active === 'true',
+          active:
+            filter.active === true ||
+            filter.active === 'true',
         };
       }
 
@@ -241,23 +280,24 @@ module.exports = class InvoiceDBApi {
       }
     }
 
-    let { rows, count } = await db.invoice.findAndCountAll({
-      where,
-      include,
-      distinct: true,
-      limit: limit ? Number(limit) : undefined,
-      offset: offset ? Number(offset) : undefined,
-      order:
-        filter.field && filter.sort
+    let { rows, count } = await db.invoice.findAndCountAll(
+      {
+        where,
+        include,
+        distinct: true,
+        limit: limit ? Number(limit) : undefined,
+        offset: offset ? Number(offset) : undefined,
+        order: (filter.field && filter.sort)
           ? [[filter.field, filter.sort]]
           : [['createdAt', 'desc']],
-      transaction,
-    });
+        transaction,
+      },
+    );
 
-    //    rows = await this._fillWithRelationsAndFilesForRows(
-    //      rows,
-    //      options,
-    //    );
+//    rows = await this._fillWithRelationsAndFilesForRows(
+//      rows,
+//      options,
+//    );
 
     return { rows, count };
   }
@@ -269,13 +309,17 @@ module.exports = class InvoiceDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('invoice', 'id', query),
+          Utils.ilike(
+            'invoice',
+            'id',
+            query,
+          ),
         ],
       };
     }
 
     const records = await db.invoice.findAll({
-      attributes: ['id', 'id'],
+      attributes: [ 'id', 'id' ],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['id', 'ASC']],
@@ -286,4 +330,6 @@ module.exports = class InvoiceDBApi {
       label: record.id,
     }));
   }
+
 };
+

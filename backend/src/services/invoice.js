@@ -5,51 +5,69 @@ module.exports = class InvoiceService {
   static async create(data, currentUser) {
     const transaction = await db.sequelize.transaction();
     try {
-      await InvoiceDBApi.create(data, {
-        currentUser,
-        transaction,
-      });
+      await InvoiceDBApi.create(
+        data,
+        {
+          currentUser,
+          transaction,
+        },
+      );
 
       await transaction.commit();
     } catch (error) {
       await transaction.rollback();
       throw error;
     }
-  }
+  };
   static async update(data, id, currentUser) {
     const transaction = await db.sequelize.transaction();
     try {
-      let invoice = await InvoiceDBApi.findBy({ id }, { transaction });
+      let invoice = await InvoiceDBApi.findBy(
+        {id},
+        {transaction},
+      );
 
       if (!invoice) {
-        throw new ValidationError('invoiceNotFound');
+        throw new ValidationError(
+          'invoiceNotFound',
+        );
       }
 
-      await InvoiceDBApi.update(id, data, {
-        currentUser,
-        transaction,
-      });
+      await InvoiceDBApi.update(
+        id,
+        data,
+        {
+          currentUser,
+          transaction,
+        },
+      );
 
       await transaction.commit();
       return invoice;
+
     } catch (error) {
       await transaction.rollback();
       throw error;
     }
-  }
+  };
 
   static async remove(id, currentUser) {
     const transaction = await db.sequelize.transaction();
 
     try {
       if (currentUser.role !== 'admin') {
-        throw new ValidationError('errors.forbidden.message');
+        throw new ValidationError(
+          'errors.forbidden.message',
+        );
       }
 
-      await InvoiceDBApi.remove(id, {
-        currentUser,
-        transaction,
-      });
+      await InvoiceDBApi.remove(
+        id,
+        {
+          currentUser,
+          transaction,
+        },
+      );
 
       await transaction.commit();
     } catch (error) {
@@ -58,3 +76,4 @@ module.exports = class InvoiceService {
     }
   }
 };
+

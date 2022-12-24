@@ -1,3 +1,4 @@
+
 const db = require('../models');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
@@ -7,32 +8,57 @@ const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
 module.exports = class SupplierDBApi {
+
   static async create(data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
-    const transaction = (options && options.transaction) || undefined;
+  const currentUser = (options && options.currentUser) || { id: null };
+  const transaction = (options && options.transaction) || undefined;
 
-    const supplier = await db.supplier.create(
-      {
-        id: data.id || undefined,
+  const supplier = await db.supplier.create(
+  {
+  id: data.id || undefined,
 
-        supplierCode: data.supplierCode || null,
-        CompanyName: data.CompanyName || null,
-        contactFirstName: data.contactFirstName || null,
-        contactLastName: data.contactLastName || null,
-        phone: data.phone || null,
-        zipCode: data.zipCode || null,
-        importHash: data.importHash || null,
-        createdById: currentUser.id,
-        updatedById: currentUser.id,
-      },
-      { transaction },
-    );
+    supplierCode: data.supplierCode
+    ||
+    null
+,
 
-    return supplier;
+    CompanyName: data.CompanyName
+    ||
+    null
+,
+
+    contactFirstName: data.contactFirstName
+    ||
+    null
+,
+
+    contactLastName: data.contactLastName
+    ||
+    null
+,
+
+    phone: data.phone
+    ||
+    null
+,
+
+    zipCode: data.zipCode
+    ||
+    null
+,
+
+  importHash: data.importHash || null,
+  createdById: currentUser.id,
+  updatedById: currentUser.id,
+  },
+  { transaction },
+  );
+
+  return supplier;
   }
 
   static async update(id, data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const supplier = await db.supplier.findByPk(id, {
@@ -41,37 +67,59 @@ module.exports = class SupplierDBApi {
 
     await supplier.update(
       {
-        supplierCode: data.supplierCode || null,
-        CompanyName: data.CompanyName || null,
-        contactFirstName: data.contactFirstName || null,
-        contactLastName: data.contactLastName || null,
-        phone: data.phone || null,
-        zipCode: data.zipCode || null,
+
+        supplierCode: data.supplierCode
+        ||
+        null
+,
+
+        CompanyName: data.CompanyName
+        ||
+        null
+,
+
+        contactFirstName: data.contactFirstName
+        ||
+        null
+,
+
+        contactLastName: data.contactLastName
+        ||
+        null
+,
+
+        phone: data.phone
+        ||
+        null
+,
+
+        zipCode: data.zipCode
+        ||
+        null
+,
+
         updatedById: currentUser.id,
       },
-      { transaction },
+      {transaction},
     );
 
     return supplier;
   }
 
   static async remove(id, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const supplier = await db.supplier.findByPk(id, options);
 
-    await supplier.update(
-      {
-        deletedBy: currentUser.id,
-      },
-      {
-        transaction,
-      },
-    );
+    await supplier.update({
+      deletedBy: currentUser.id
+    }, {
+      transaction,
+    });
 
     await supplier.destroy({
-      transaction,
+      transaction
     });
 
     return supplier;
@@ -80,13 +128,16 @@ module.exports = class SupplierDBApi {
   static async findBy(where, options) {
     const transaction = (options && options.transaction) || undefined;
 
-    const supplier = await db.supplier.findOne({ where }, { transaction });
+    const supplier = await db.supplier.findOne(
+      { where },
+      { transaction },
+    );
 
     if (!supplier) {
       return supplier;
     }
 
-    const output = supplier.get({ plain: true });
+    const output = supplier.get({plain: true});
 
     return output;
   }
@@ -102,7 +153,9 @@ module.exports = class SupplierDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [];
+    let include = [
+
+    ];
 
     if (filter) {
       if (filter.id) {
@@ -115,7 +168,11 @@ module.exports = class SupplierDBApi {
       if (filter.CompanyName) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('supplier', 'CompanyName', filter.CompanyName),
+          [Op.and]: Utils.ilike(
+            'supplier',
+            'CompanyName',
+            filter.CompanyName,
+          ),
         };
       }
 
@@ -144,7 +201,11 @@ module.exports = class SupplierDBApi {
       if (filter.phone) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('supplier', 'phone', filter.phone),
+          [Op.and]: Utils.ilike(
+            'supplier',
+            'phone',
+            filter.phone,
+          ),
         };
       }
 
@@ -204,7 +265,9 @@ module.exports = class SupplierDBApi {
       ) {
         where = {
           ...where,
-          active: filter.active === true || filter.active === 'true',
+          active:
+            filter.active === true ||
+            filter.active === 'true',
         };
       }
 
@@ -233,23 +296,24 @@ module.exports = class SupplierDBApi {
       }
     }
 
-    let { rows, count } = await db.supplier.findAndCountAll({
-      where,
-      include,
-      distinct: true,
-      limit: limit ? Number(limit) : undefined,
-      offset: offset ? Number(offset) : undefined,
-      order:
-        filter.field && filter.sort
+    let { rows, count } = await db.supplier.findAndCountAll(
+      {
+        where,
+        include,
+        distinct: true,
+        limit: limit ? Number(limit) : undefined,
+        offset: offset ? Number(offset) : undefined,
+        order: (filter.field && filter.sort)
           ? [[filter.field, filter.sort]]
           : [['createdAt', 'desc']],
-      transaction,
-    });
+        transaction,
+      },
+    );
 
-    //    rows = await this._fillWithRelationsAndFilesForRows(
-    //      rows,
-    //      options,
-    //    );
+//    rows = await this._fillWithRelationsAndFilesForRows(
+//      rows,
+//      options,
+//    );
 
     return { rows, count };
   }
@@ -261,13 +325,17 @@ module.exports = class SupplierDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('supplier', 'id', query),
+          Utils.ilike(
+            'supplier',
+            'id',
+            query,
+          ),
         ],
       };
     }
 
     const records = await db.supplier.findAll({
-      attributes: ['id', 'id'],
+      attributes: [ 'id', 'id' ],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['id', 'ASC']],
@@ -278,4 +346,6 @@ module.exports = class SupplierDBApi {
       label: record.id,
     }));
   }
+
 };
+

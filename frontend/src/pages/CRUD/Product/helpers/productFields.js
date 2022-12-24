@@ -1,56 +1,81 @@
+
 const productFields = {
-  id: { type: 'id', label: 'ID' },
+	id: { type: 'id', label: 'ID' },
 
-  productCode: { type: 'int', label: 'Product Code' },
+    productCode: { type: 'int', label: 'Product Code',
 
-  description: {
-    type: 'string',
-    label: 'Description',
+    },
 
-    options: [{ value: 'value', label: 'value' }],
-  },
+    description: { type: 'string', label: 'Description',
 
-  inDate: {
-    type: 'date',
-    label: 'In Date',
+    options: [
 
-    options: [{ value: 'value', label: 'value' }],
-  },
+    { value: 'value', label: 'value' },
 
-  quantityOnHand: {
-    type: 'int',
-    label: 'Quantity On Hand',
+]
 
-    options: [{ value: 'value', label: 'value' }],
-  },
+    },
 
-  minQuantityOnHand: {
-    type: 'int',
-    label: 'Min Quantity On Hand',
+    inDate: { type: 'date', label: 'In Date',
 
-    options: [{ value: 'value', label: 'value' }],
-  },
+    options: [
 
-  price: {
-    type: 'decimal',
-    label: 'Price',
+    { value: 'value', label: 'value' },
 
-    options: [{ value: 'value', label: 'value' }],
-  },
+]
 
-  dicountRate: {
-    type: 'decimal',
-    label: 'Dicount Rate',
+    },
 
-    options: [{ value: 'value', label: 'value' }],
-  },
+    quantityOnHand: { type: 'int', label: 'Quantity On Hand',
 
-  supplierCode: {
-    type: 'int',
-    label: 'Supplier Code',
+    options: [
 
-    options: [{ value: 'value', label: 'value' }],
-  },
-};
+    { value: 'value', label: 'value' },
+
+]
+
+    },
+
+    minQuantityOnHand: { type: 'int', label: 'Min Quantity On Hand',
+
+    options: [
+
+    { value: 'value', label: 'value' },
+
+]
+
+    },
+
+    price: { type: 'decimal', label: 'Price',
+
+    options: [
+
+    { value: 'value', label: 'value' },
+
+]
+
+    },
+
+    dicountRate: { type: 'decimal', label: 'Dicount Rate',
+
+    options: [
+
+    { value: 'value', label: 'value' },
+
+]
+
+    },
+
+    supplierCode: { type: 'int', label: 'Supplier Code',
+
+    options: [
+
+    { value: 'value', label: 'value' },
+
+]
+
+    },
+
+}
 
 export default productFields;

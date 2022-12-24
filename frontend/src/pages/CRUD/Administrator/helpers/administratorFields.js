@@ -1,19 +1,27 @@
+
 const administratorFields = {
-  id: { type: 'id', label: 'ID' },
+	id: { type: 'id', label: 'ID' },
 
-  password: {
-    type: 'string',
-    label: 'Password',
+    password: { type: 'string', label: 'Password',
 
-    options: [{ value: 'value', label: 'value' }],
-  },
+    options: [
 
-  employeeID: {
-    type: 'int',
-    label: 'Employee ID',
+    { value: 'value', label: 'value' },
 
-    options: [{ value: 'value', label: 'value' }],
-  },
-};
+]
+
+    },
+
+    employeeID: { type: 'int', label: 'Employee ID',
+
+    options: [
+
+    { value: 'value', label: 'value' },
+
+]
+
+    },
+
+}
 
 export default administratorFields;

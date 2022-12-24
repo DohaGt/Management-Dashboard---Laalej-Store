@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const moment = require('moment');
 
-module.exports = function (sequelize, DataTypes) {
+module.exports = function(sequelize, DataTypes) {
   const adminhistory = sequelize.define(
     'adminhistory',
     {
@@ -14,28 +14,35 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
       },
 
-      startDate: {
+startDate: {
         type: DataTypes.DATEONLY,
 
-        get: function () {
+        get: function() {
           return this.getDataValue('startDate')
-            ? moment.utc(this.getDataValue('startDate')).format('YYYY-MM-DD')
+            ? moment
+                .utc(this.getDataValue('startDate'))
+                .format('YYYY-MM-DD')
             : null;
         },
+
       },
 
-      endDate: {
+endDate: {
         type: DataTypes.DATEONLY,
 
-        get: function () {
+        get: function() {
           return this.getDataValue('endDate')
-            ? moment.utc(this.getDataValue('endDate')).format('YYYY-MM-DD')
+            ? moment
+                .utc(this.getDataValue('endDate'))
+                .format('YYYY-MM-DD')
             : null;
         },
+
       },
 
-      employeeID: {
+employeeID: {
         type: DataTypes.INTEGER,
+
       },
 
       importHash: {
@@ -52,6 +59,7 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   adminhistory.associate = (db) => {
+
     db.adminhistory.belongsTo(db.users, {
       as: 'createdBy',
     });
@@ -63,3 +71,4 @@ module.exports = function (sequelize, DataTypes) {
 
   return adminhistory;
 };
+

@@ -1,3 +1,4 @@
+
 const db = require('../models');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
@@ -7,31 +8,52 @@ const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
 module.exports = class LineDBApi {
+
   static async create(data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
-    const transaction = (options && options.transaction) || undefined;
+  const currentUser = (options && options.currentUser) || { id: null };
+  const transaction = (options && options.transaction) || undefined;
 
-    const line = await db.line.create(
-      {
-        id: data.id || undefined,
+  const line = await db.line.create(
+  {
+  id: data.id || undefined,
 
-        quantity: data.quantity || null,
-        lineNumber: data.lineNumber || null,
-        unitPrice: data.unitPrice || null,
-        invoiceNumber: data.invoiceNumber || null,
-        clientCode: data.clientCode || null,
-        importHash: data.importHash || null,
-        createdById: currentUser.id,
-        updatedById: currentUser.id,
-      },
-      { transaction },
-    );
+    quantity: data.quantity
+    ||
+    null
+,
 
-    return line;
+    lineNumber: data.lineNumber
+    ||
+    null
+,
+
+    unitPrice: data.unitPrice
+    ||
+    null
+,
+
+    invoiceNumber: data.invoiceNumber
+    ||
+    null
+,
+
+    clientCode: data.clientCode
+    ||
+    null
+,
+
+  importHash: data.importHash || null,
+  createdById: currentUser.id,
+  updatedById: currentUser.id,
+  },
+  { transaction },
+  );
+
+  return line;
   }
 
   static async update(id, data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const line = await db.line.findByPk(id, {
@@ -40,36 +62,54 @@ module.exports = class LineDBApi {
 
     await line.update(
       {
-        quantity: data.quantity || null,
-        lineNumber: data.lineNumber || null,
-        unitPrice: data.unitPrice || null,
-        invoiceNumber: data.invoiceNumber || null,
-        clientCode: data.clientCode || null,
+
+        quantity: data.quantity
+        ||
+        null
+,
+
+        lineNumber: data.lineNumber
+        ||
+        null
+,
+
+        unitPrice: data.unitPrice
+        ||
+        null
+,
+
+        invoiceNumber: data.invoiceNumber
+        ||
+        null
+,
+
+        clientCode: data.clientCode
+        ||
+        null
+,
+
         updatedById: currentUser.id,
       },
-      { transaction },
+      {transaction},
     );
 
     return line;
   }
 
   static async remove(id, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const line = await db.line.findByPk(id, options);
 
-    await line.update(
-      {
-        deletedBy: currentUser.id,
-      },
-      {
-        transaction,
-      },
-    );
+    await line.update({
+      deletedBy: currentUser.id
+    }, {
+      transaction,
+    });
 
     await line.destroy({
-      transaction,
+      transaction
     });
 
     return line;
@@ -78,13 +118,16 @@ module.exports = class LineDBApi {
   static async findBy(where, options) {
     const transaction = (options && options.transaction) || undefined;
 
-    const line = await db.line.findOne({ where }, { transaction });
+    const line = await db.line.findOne(
+      { where },
+      { transaction },
+    );
 
     if (!line) {
       return line;
     }
 
-    const output = line.get({ plain: true });
+    const output = line.get({plain: true});
 
     return output;
   }
@@ -100,7 +143,9 @@ module.exports = class LineDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [];
+    let include = [
+
+    ];
 
     if (filter) {
       if (filter.id) {
@@ -238,7 +283,9 @@ module.exports = class LineDBApi {
       ) {
         where = {
           ...where,
-          active: filter.active === true || filter.active === 'true',
+          active:
+            filter.active === true ||
+            filter.active === 'true',
         };
       }
 
@@ -267,23 +314,24 @@ module.exports = class LineDBApi {
       }
     }
 
-    let { rows, count } = await db.line.findAndCountAll({
-      where,
-      include,
-      distinct: true,
-      limit: limit ? Number(limit) : undefined,
-      offset: offset ? Number(offset) : undefined,
-      order:
-        filter.field && filter.sort
+    let { rows, count } = await db.line.findAndCountAll(
+      {
+        where,
+        include,
+        distinct: true,
+        limit: limit ? Number(limit) : undefined,
+        offset: offset ? Number(offset) : undefined,
+        order: (filter.field && filter.sort)
           ? [[filter.field, filter.sort]]
           : [['createdAt', 'desc']],
-      transaction,
-    });
+        transaction,
+      },
+    );
 
-    //    rows = await this._fillWithRelationsAndFilesForRows(
-    //      rows,
-    //      options,
-    //    );
+//    rows = await this._fillWithRelationsAndFilesForRows(
+//      rows,
+//      options,
+//    );
 
     return { rows, count };
   }
@@ -295,13 +343,17 @@ module.exports = class LineDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('line', 'id', query),
+          Utils.ilike(
+            'line',
+            'id',
+            query,
+          ),
         ],
       };
     }
 
     const records = await db.line.findAll({
-      attributes: ['id', 'id'],
+      attributes: [ 'id', 'id' ],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['id', 'ASC']],
@@ -312,4 +364,6 @@ module.exports = class LineDBApi {
       label: record.id,
     }));
   }
+
 };
+

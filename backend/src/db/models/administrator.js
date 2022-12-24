@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const moment = require('moment');
 
-module.exports = function (sequelize, DataTypes) {
+module.exports = function(sequelize, DataTypes) {
   const administrator = sequelize.define(
     'administrator',
     {
@@ -14,12 +14,14 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
       },
 
-      password: {
+password: {
         type: DataTypes.TEXT,
+
       },
 
-      employeeID: {
+employeeID: {
         type: DataTypes.INTEGER,
+
       },
 
       importHash: {
@@ -36,6 +38,7 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   administrator.associate = (db) => {
+
     db.administrator.belongsTo(db.users, {
       as: 'createdBy',
     });
@@ -47,3 +50,4 @@ module.exports = function (sequelize, DataTypes) {
 
   return administrator;
 };
+

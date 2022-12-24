@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const moment = require('moment');
 
-module.exports = function (sequelize, DataTypes) {
+module.exports = function(sequelize, DataTypes) {
   const product = sequelize.define(
     'product',
     {
@@ -14,42 +14,52 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
       },
 
-      productCode: {
+productCode: {
         type: DataTypes.INTEGER,
+
       },
 
-      description: {
+description: {
         type: DataTypes.TEXT,
+
       },
 
-      inDate: {
+inDate: {
         type: DataTypes.DATEONLY,
 
-        get: function () {
+        get: function() {
           return this.getDataValue('inDate')
-            ? moment.utc(this.getDataValue('inDate')).format('YYYY-MM-DD')
+            ? moment
+                .utc(this.getDataValue('inDate'))
+                .format('YYYY-MM-DD')
             : null;
         },
+
       },
 
-      quantityOnHand: {
+quantityOnHand: {
         type: DataTypes.INTEGER,
+
       },
 
-      minQuantityOnHand: {
+minQuantityOnHand: {
         type: DataTypes.INTEGER,
+
       },
 
-      price: {
+price: {
         type: DataTypes.DECIMAL,
+
       },
 
-      dicountRate: {
+dicountRate: {
         type: DataTypes.DECIMAL,
+
       },
 
-      supplierCode: {
+supplierCode: {
         type: DataTypes.INTEGER,
+
       },
 
       importHash: {
@@ -66,6 +76,7 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   product.associate = (db) => {
+
     db.product.belongsTo(db.users, {
       as: 'createdBy',
     });
@@ -77,3 +88,4 @@ module.exports = function (sequelize, DataTypes) {
 
   return product;
 };
+

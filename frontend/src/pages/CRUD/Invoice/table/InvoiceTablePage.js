@@ -7,6 +7,6 @@ const InvoiceTablePage = () => {
       <InvoiceTable />
     </div>
   );
-};
+}
 
 export default InvoiceTablePage;

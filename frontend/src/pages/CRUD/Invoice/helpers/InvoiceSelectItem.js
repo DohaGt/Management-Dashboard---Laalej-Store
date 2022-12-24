@@ -50,7 +50,10 @@ const InvoiceSelectItem = (props) => {
     },
   };
 
-  const { form, ...rest } = props;
+  const {
+    form,
+    ...rest
+  } = props;
 
   return (
     <React.Fragment>
@@ -63,10 +66,12 @@ const InvoiceSelectItem = (props) => {
       />
     </React.Fragment>
   );
-};
+}
 
 const select = (state) => ({
-  hasPermissionToCreate: state.invoice.hasPermissionToCreate,
+  hasPermissionToCreate: state.invoice.hasPermissionToCreate
 });
 
-export default connect(select)(InvoiceSelectItem);
+export default connect(select)(
+  InvoiceSelectItem,
+);
