@@ -14,18 +14,8 @@ module.exports = function(sequelize, DataTypes) {
         primaryKey: true,
       },
 
-quantity: {
-        type: DataTypes.INTEGER,
-
-      },
-
 lineNumber: {
         type: DataTypes.INTEGER,
-
-      },
-
-unitPrice: {
-        type: DataTypes.DECIMAL,
 
       },
 
@@ -36,6 +26,16 @@ invoiceNumber: {
 
 clientCode: {
         type: DataTypes.INTEGER,
+
+      },
+
+quantity: {
+        type: DataTypes.INTEGER,
+
+      },
+
+unitPrice: {
+        type: DataTypes.DECIMAL,
 
       },
 

@@ -74,18 +74,16 @@ const AdministratorForm = (props) => {
 
       <Grid item>
         <InputFormItem
-          name={'password'}
+          name={'employeeID'}
           schema={administratorFields}
-
-            autoFocus
-
         />
       </Grid>
 
       <Grid item>
         <InputFormItem
-          name={'employeeID'}
+          name={'password'}
           schema={administratorFields}
+
         />
       </Grid>
 

@@ -184,6 +184,13 @@ const AdminhistoryTable = () => {
 
   const columns = [
 
+      { field: "employeeID",
+
+        flex: 0.6,
+
+      headerName: "Employee ID"
+      },
+
       { field: "startDate",
 
       headerName: "Start Date"
@@ -192,13 +199,6 @@ const AdminhistoryTable = () => {
       { field: "endDate",
 
       headerName: "End Date"
-      },
-
-      { field: "employeeID",
-
-        flex: 0.6,
-
-      headerName: "Employee ID"
       },
 
       {

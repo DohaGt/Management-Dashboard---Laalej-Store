@@ -17,17 +17,7 @@ module.exports = class LineDBApi {
   {
   id: data.id || undefined,
 
-    quantity: data.quantity
-    ||
-    null
-,
-
     lineNumber: data.lineNumber
-    ||
-    null
-,
-
-    unitPrice: data.unitPrice
     ||
     null
 ,
@@ -38,6 +28,16 @@ module.exports = class LineDBApi {
 ,
 
     clientCode: data.clientCode
+    ||
+    null
+,
+
+    quantity: data.quantity
+    ||
+    null
+,
+
+    unitPrice: data.unitPrice
     ||
     null
 ,
@@ -63,17 +63,7 @@ module.exports = class LineDBApi {
     await line.update(
       {
 
-        quantity: data.quantity
-        ||
-        null
-,
-
         lineNumber: data.lineNumber
-        ||
-        null
-,
-
-        unitPrice: data.unitPrice
         ||
         null
 ,
@@ -84,6 +74,16 @@ module.exports = class LineDBApi {
 ,
 
         clientCode: data.clientCode
+        ||
+        null
+,
+
+        quantity: data.quantity
+        ||
+        null
+,
+
+        unitPrice: data.unitPrice
         ||
         null
 ,
@@ -155,30 +155,6 @@ module.exports = class LineDBApi {
         };
       }
 
-      if (filter.quantityRange) {
-        const [start, end] = filter.quantityRange;
-
-        if (start !== undefined && start !== null && start !== '') {
-          where = {
-            ...where,
-            quantity: {
-              ...where.quantity,
-              [Op.gte]: start,
-            },
-          };
-        }
-
-        if (end !== undefined && end !== null && end !== '') {
-          where = {
-            ...where,
-            quantity: {
-              ...where.quantity,
-              [Op.lte]: end,
-            },
-          };
-        }
-      }
-
       if (filter.lineNumberRange) {
         const [start, end] = filter.lineNumberRange;
 
@@ -197,30 +173,6 @@ module.exports = class LineDBApi {
             ...where,
             lineNumber: {
               ...where.lineNumber,
-              [Op.lte]: end,
-            },
-          };
-        }
-      }
-
-      if (filter.unitPriceRange) {
-        const [start, end] = filter.unitPriceRange;
-
-        if (start !== undefined && start !== null && start !== '') {
-          where = {
-            ...where,
-            unitPrice: {
-              ...where.unitPrice,
-              [Op.gte]: start,
-            },
-          };
-        }
-
-        if (end !== undefined && end !== null && end !== '') {
-          where = {
-            ...where,
-            unitPrice: {
-              ...where.unitPrice,
               [Op.lte]: end,
             },
           };
@@ -269,6 +221,54 @@ module.exports = class LineDBApi {
             ...where,
             clientCode: {
               ...where.clientCode,
+              [Op.lte]: end,
+            },
+          };
+        }
+      }
+
+      if (filter.quantityRange) {
+        const [start, end] = filter.quantityRange;
+
+        if (start !== undefined && start !== null && start !== '') {
+          where = {
+            ...where,
+            quantity: {
+              ...where.quantity,
+              [Op.gte]: start,
+            },
+          };
+        }
+
+        if (end !== undefined && end !== null && end !== '') {
+          where = {
+            ...where,
+            quantity: {
+              ...where.quantity,
+              [Op.lte]: end,
+            },
+          };
+        }
+      }
+
+      if (filter.unitPriceRange) {
+        const [start, end] = filter.unitPriceRange;
+
+        if (start !== undefined && start !== null && start !== '') {
+          where = {
+            ...where,
+            unitPrice: {
+              ...where.unitPrice,
+              [Op.gte]: start,
+            },
+          };
+        }
+
+        if (end !== undefined && end !== null && end !== '') {
+          where = {
+            ...where,
+            unitPrice: {
+              ...where.unitPrice,
               [Op.lte]: end,
             },
           };

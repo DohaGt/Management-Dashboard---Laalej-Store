@@ -15,9 +15,6 @@ const router = express.Router();
  *        type: object
  *        properties:
 
- *          quantity:
- *            type: integer
- *            format: int64
  *          lineNumber:
  *            type: integer
  *            format: int64
@@ -25,6 +22,9 @@ const router = express.Router();
  *            type: integer
  *            format: int64
  *          clientCode:
+ *            type: integer
+ *            format: int64
+ *          quantity:
  *            type: integer
  *            format: int64
 

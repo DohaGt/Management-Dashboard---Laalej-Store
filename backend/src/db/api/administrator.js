@@ -17,12 +17,12 @@ module.exports = class AdministratorDBApi {
   {
   id: data.id || undefined,
 
-    password: data.password
+    employeeID: data.employeeID
     ||
     null
 ,
 
-    employeeID: data.employeeID
+    password: data.password
     ||
     null
 ,
@@ -48,12 +48,12 @@ module.exports = class AdministratorDBApi {
     await administrator.update(
       {
 
-        password: data.password
+        employeeID: data.employeeID
         ||
         null
 ,
 
-        employeeID: data.employeeID
+        password: data.password
         ||
         null
 ,

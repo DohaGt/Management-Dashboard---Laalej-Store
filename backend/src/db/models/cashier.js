@@ -14,12 +14,12 @@ module.exports = function(sequelize, DataTypes) {
         primaryKey: true,
       },
 
-cashDeskNumber: {
+employeeID: {
         type: DataTypes.INTEGER,
 
       },
 
-employeeID: {
+cashDeskNumber: {
         type: DataTypes.INTEGER,
 
       },

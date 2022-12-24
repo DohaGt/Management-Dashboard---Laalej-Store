@@ -2,7 +2,7 @@
 const cashierFields = {
 	id: { type: 'id', label: 'ID' },
 
-    cashDeskNumber: { type: 'int', label: 'Cash Desk Number',
+    employeeID: { type: 'int', label: 'Employee ID',
 
     options: [
 
@@ -12,7 +12,7 @@ const cashierFields = {
 
     },
 
-    employeeID: { type: 'int', label: 'Employee ID',
+    cashDeskNumber: { type: 'int', label: 'Cash Desk Number',
 
     options: [
 

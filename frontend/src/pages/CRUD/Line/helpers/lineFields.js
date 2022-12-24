@@ -2,15 +2,7 @@
 const lineFields = {
 	id: { type: 'id', label: 'ID' },
 
-    quantity: { type: 'int', label: 'quantity',
-
-    },
-
     lineNumber: { type: 'int', label: 'Line Number',
-
-    },
-
-    unitPrice: { type: 'decimal', label: 'Unit Price',
 
     },
 
@@ -25,6 +17,26 @@ const lineFields = {
     },
 
     clientCode: { type: 'int', label: 'Client Code',
+
+    options: [
+
+    { value: 'value', label: 'value' },
+
+]
+
+    },
+
+    quantity: { type: 'int', label: 'Quantity',
+
+    options: [
+
+    { value: 'value', label: 'value' },
+
+]
+
+    },
+
+    unitPrice: { type: 'decimal', label: 'Unit Price',
 
     options: [
 

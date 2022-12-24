@@ -2,7 +2,7 @@
 const salespersonFields = {
 	id: { type: 'id', label: 'ID' },
 
-    commission: { type: 'decimal', label: 'Commission',
+    employeeID: { type: 'int', label: 'Employee ID',
 
     options: [
 
@@ -12,7 +12,7 @@ const salespersonFields = {
 
     },
 
-    employeeID: { type: 'int', label: 'Employee ID',
+    commission: { type: 'decimal', label: 'Commission',
 
     options: [
 

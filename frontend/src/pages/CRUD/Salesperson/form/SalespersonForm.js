@@ -74,18 +74,16 @@ const SalespersonForm = (props) => {
 
       <Grid item>
         <InputFormItem
-          name={'commission'}
+          name={'employeeID'}
           schema={salespersonFields}
-
-            autoFocus
-
         />
       </Grid>
 
       <Grid item>
         <InputFormItem
-          name={'employeeID'}
+          name={'commission'}
           schema={salespersonFields}
+
         />
       </Grid>
 

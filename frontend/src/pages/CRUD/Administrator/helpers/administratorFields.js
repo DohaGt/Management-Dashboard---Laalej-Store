@@ -2,7 +2,7 @@
 const administratorFields = {
 	id: { type: 'id', label: 'ID' },
 
-    password: { type: 'string', label: 'Password',
+    employeeID: { type: 'int', label: 'Employee ID',
 
     options: [
 
@@ -12,7 +12,7 @@ const administratorFields = {
 
     },
 
-    employeeID: { type: 'int', label: 'Employee ID',
+    password: { type: 'string', label: 'Password',
 
     options: [
 

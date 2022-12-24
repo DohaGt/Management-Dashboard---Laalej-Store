@@ -74,14 +74,14 @@ const CashierForm = (props) => {
 
       <Grid item>
         <InputFormItem
-          name={'cashDeskNumber'}
+          name={'employeeID'}
           schema={cashierFields}
         />
       </Grid>
 
       <Grid item>
         <InputFormItem
-          name={'employeeID'}
+          name={'cashDeskNumber'}
           schema={cashierFields}
         />
       </Grid>

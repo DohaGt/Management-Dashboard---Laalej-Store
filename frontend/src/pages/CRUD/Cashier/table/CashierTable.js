@@ -56,7 +56,7 @@ const CashierTable = () => {
 
   const [filters, setFilters] = React.useState([
 
-          {label: 'Cash Desk Number', title: 'cashDeskNumber', number: 'true'},{label: 'Employee ID', title: 'employeeID', number: 'true'},
+          {label: 'Employee ID', title: 'employeeID', number: 'true'},{label: 'Cash Desk Number', title: 'cashDeskNumber', number: 'true'},
 
   ]);
 
@@ -184,18 +184,18 @@ const CashierTable = () => {
 
   const columns = [
 
-      { field: "cashDeskNumber",
-
-        flex: 0.6,
-
-      headerName: "Cash Desk Number"
-      },
-
       { field: "employeeID",
 
         flex: 0.6,
 
       headerName: "Employee ID"
+      },
+
+      { field: "cashDeskNumber",
+
+        flex: 0.6,
+
+      headerName: "Cash Desk Number"
       },
 
       {

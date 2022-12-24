@@ -73,6 +73,13 @@ const AdminhistoryForm = (props) => {
     <Grid container spacing={3} direction="column">
 
       <Grid item>
+        <InputFormItem
+          name={'employeeID'}
+          schema={adminhistoryFields}
+        />
+      </Grid>
+
+      <Grid item>
         <DatePickerFormItem
           name={'startDate'}
           schema={adminhistoryFields}
@@ -82,13 +89,6 @@ const AdminhistoryForm = (props) => {
       <Grid item>
         <DatePickerFormItem
           name={'endDate'}
-          schema={adminhistoryFields}
-        />
-      </Grid>
-
-      <Grid item>
-        <InputFormItem
-          name={'employeeID'}
           schema={adminhistoryFields}
         />
       </Grid>

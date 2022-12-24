@@ -14,13 +14,13 @@ module.exports = function(sequelize, DataTypes) {
         primaryKey: true,
       },
 
-commission: {
-        type: DataTypes.DECIMAL,
+employeeID: {
+        type: DataTypes.INTEGER,
 
       },
 
-employeeID: {
-        type: DataTypes.INTEGER,
+commission: {
+        type: DataTypes.DECIMAL,
 
       },
 

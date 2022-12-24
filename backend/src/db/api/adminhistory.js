@@ -17,17 +17,17 @@ module.exports = class AdminhistoryDBApi {
   {
   id: data.id || undefined,
 
+    employeeID: data.employeeID
+    ||
+    null
+,
+
     startDate: data.startDate
     ||
     null
 ,
 
     endDate: data.endDate
-    ||
-    null
-,
-
-    employeeID: data.employeeID
     ||
     null
 ,
@@ -53,17 +53,17 @@ module.exports = class AdminhistoryDBApi {
     await adminhistory.update(
       {
 
+        employeeID: data.employeeID
+        ||
+        null
+,
+
         startDate: data.startDate
         ||
         null
 ,
 
         endDate: data.endDate
-        ||
-        null
-,
-
-        employeeID: data.employeeID
         ||
         null
 ,
@@ -135,6 +135,30 @@ module.exports = class AdminhistoryDBApi {
         };
       }
 
+      if (filter.employeeIDRange) {
+        const [start, end] = filter.employeeIDRange;
+
+        if (start !== undefined && start !== null && start !== '') {
+          where = {
+            ...where,
+            employeeID: {
+              ...where.employeeID,
+              [Op.gte]: start,
+            },
+          };
+        }
+
+        if (end !== undefined && end !== null && end !== '') {
+          where = {
+            ...where,
+            employeeID: {
+              ...where.employeeID,
+              [Op.lte]: end,
+            },
+          };
+        }
+      }
+
       if (filter.startDateRange) {
         const [start, end] = filter.startDateRange;
 
@@ -177,30 +201,6 @@ module.exports = class AdminhistoryDBApi {
             ...where,
             endDate: {
               ...where.endDate,
-              [Op.lte]: end,
-            },
-          };
-        }
-      }
-
-      if (filter.employeeIDRange) {
-        const [start, end] = filter.employeeIDRange;
-
-        if (start !== undefined && start !== null && start !== '') {
-          where = {
-            ...where,
-            employeeID: {
-              ...where.employeeID,
-              [Op.gte]: start,
-            },
-          };
-        }
-
-        if (end !== undefined && end !== null && end !== '') {
-          where = {
-            ...where,
-            employeeID: {
-              ...where.employeeID,
               [Op.lte]: end,
             },
           };

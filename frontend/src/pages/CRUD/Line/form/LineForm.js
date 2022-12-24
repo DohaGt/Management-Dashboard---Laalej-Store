@@ -74,23 +74,8 @@ const LineForm = (props) => {
 
       <Grid item>
         <InputFormItem
-          name={'quantity'}
-          schema={lineFields}
-        />
-      </Grid>
-
-      <Grid item>
-        <InputFormItem
           name={'lineNumber'}
           schema={lineFields}
-        />
-      </Grid>
-
-      <Grid item>
-        <InputFormItem
-          name={'unitPrice'}
-          schema={lineFields}
-
         />
       </Grid>
 
@@ -105,6 +90,21 @@ const LineForm = (props) => {
         <InputFormItem
           name={'clientCode'}
           schema={lineFields}
+        />
+      </Grid>
+
+      <Grid item>
+        <InputFormItem
+          name={'quantity'}
+          schema={lineFields}
+        />
+      </Grid>
+
+      <Grid item>
+        <InputFormItem
+          name={'unitPrice'}
+          schema={lineFields}
+
         />
       </Grid>
 

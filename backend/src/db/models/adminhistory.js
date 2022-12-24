@@ -14,6 +14,11 @@ module.exports = function(sequelize, DataTypes) {
         primaryKey: true,
       },
 
+employeeID: {
+        type: DataTypes.INTEGER,
+
+      },
+
 startDate: {
         type: DataTypes.DATEONLY,
 
@@ -37,11 +42,6 @@ endDate: {
                 .format('YYYY-MM-DD')
             : null;
         },
-
-      },
-
-employeeID: {
-        type: DataTypes.INTEGER,
 
       },
 

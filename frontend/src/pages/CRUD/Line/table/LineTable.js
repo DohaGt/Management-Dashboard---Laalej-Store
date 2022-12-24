@@ -56,7 +56,7 @@ const LineTable = () => {
 
   const [filters, setFilters] = React.useState([
 
-          {label: 'quantity', title: 'quantity', number: 'true'},{label: 'Line Number', title: 'lineNumber', number: 'true'},{label: 'Invoice Number', title: 'invoiceNumber', number: 'true'},{label: 'Client Code', title: 'clientCode', number: 'true'},
+          {label: 'Line Number', title: 'lineNumber', number: 'true'},{label: 'Invoice Number', title: 'invoiceNumber', number: 'true'},{label: 'Client Code', title: 'clientCode', number: 'true'},{label: 'Quantity', title: 'quantity', number: 'true'},
           {label: 'Unit Price', title: 'unitPrice', number: 'true'},
 
   ]);
@@ -185,25 +185,11 @@ const LineTable = () => {
 
   const columns = [
 
-      { field: "quantity",
-
-        flex: 0.6,
-
-      headerName: "quantity"
-      },
-
       { field: "lineNumber",
 
         flex: 0.6,
 
       headerName: "Line Number"
-      },
-
-      { field: "unitPrice",
-
-        flex: 0.6,
-
-      headerName: "Unit Price"
       },
 
       { field: "invoiceNumber",
@@ -218,6 +204,20 @@ const LineTable = () => {
         flex: 0.6,
 
       headerName: "Client Code"
+      },
+
+      { field: "quantity",
+
+        flex: 0.6,
+
+      headerName: "Quantity"
+      },
+
+      { field: "unitPrice",
+
+        flex: 0.6,
+
+      headerName: "Unit Price"
       },
 
       {

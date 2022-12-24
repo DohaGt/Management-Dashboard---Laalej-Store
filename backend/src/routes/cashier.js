@@ -15,10 +15,10 @@ const router = express.Router();
  *        type: object
  *        properties:
 
- *          cashDeskNumber:
+ *          employeeID:
  *            type: integer
  *            format: int64
- *          employeeID:
+ *          cashDeskNumber:
  *            type: integer
  *            format: int64
 

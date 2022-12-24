@@ -17,12 +17,12 @@ module.exports = class SalespersonDBApi {
   {
   id: data.id || undefined,
 
-    commission: data.commission
+    employeeID: data.employeeID
     ||
     null
 ,
 
-    employeeID: data.employeeID
+    commission: data.commission
     ||
     null
 ,
@@ -48,12 +48,12 @@ module.exports = class SalespersonDBApi {
     await salesperson.update(
       {
 
-        commission: data.commission
+        employeeID: data.employeeID
         ||
         null
 ,
 
-        employeeID: data.employeeID
+        commission: data.commission
         ||
         null
 ,
@@ -125,30 +125,6 @@ module.exports = class SalespersonDBApi {
         };
       }
 
-      if (filter.commissionRange) {
-        const [start, end] = filter.commissionRange;
-
-        if (start !== undefined && start !== null && start !== '') {
-          where = {
-            ...where,
-            commission: {
-              ...where.commission,
-              [Op.gte]: start,
-            },
-          };
-        }
-
-        if (end !== undefined && end !== null && end !== '') {
-          where = {
-            ...where,
-            commission: {
-              ...where.commission,
-              [Op.lte]: end,
-            },
-          };
-        }
-      }
-
       if (filter.employeeIDRange) {
         const [start, end] = filter.employeeIDRange;
 
@@ -167,6 +143,30 @@ module.exports = class SalespersonDBApi {
             ...where,
             employeeID: {
               ...where.employeeID,
+              [Op.lte]: end,
+            },
+          };
+        }
+      }
+
+      if (filter.commissionRange) {
+        const [start, end] = filter.commissionRange;
+
+        if (start !== undefined && start !== null && start !== '') {
+          where = {
+            ...where,
+            commission: {
+              ...where.commission,
+              [Op.gte]: start,
+            },
+          };
+        }
+
+        if (end !== undefined && end !== null && end !== '') {
+          where = {
+            ...where,
+            commission: {
+              ...where.commission,
               [Op.lte]: end,
             },
           };

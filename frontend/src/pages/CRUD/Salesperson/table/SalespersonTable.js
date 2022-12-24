@@ -185,18 +185,18 @@ const SalespersonTable = () => {
 
   const columns = [
 
-      { field: "commission",
-
-        flex: 0.6,
-
-      headerName: "Commission"
-      },
-
       { field: "employeeID",
 
         flex: 0.6,
 
       headerName: "Employee ID"
+      },
+
+      { field: "commission",
+
+        flex: 0.6,
+
+      headerName: "Commission"
       },
 
       {

@@ -17,12 +17,12 @@ module.exports = class CashierDBApi {
   {
   id: data.id || undefined,
 
-    cashDeskNumber: data.cashDeskNumber
+    employeeID: data.employeeID
     ||
     null
 ,
 
-    employeeID: data.employeeID
+    cashDeskNumber: data.cashDeskNumber
     ||
     null
 ,
@@ -48,12 +48,12 @@ module.exports = class CashierDBApi {
     await cashier.update(
       {
 
-        cashDeskNumber: data.cashDeskNumber
+        employeeID: data.employeeID
         ||
         null
 ,
 
-        employeeID: data.employeeID
+        cashDeskNumber: data.cashDeskNumber
         ||
         null
 ,
@@ -125,30 +125,6 @@ module.exports = class CashierDBApi {
         };
       }
 
-      if (filter.cashDeskNumberRange) {
-        const [start, end] = filter.cashDeskNumberRange;
-
-        if (start !== undefined && start !== null && start !== '') {
-          where = {
-            ...where,
-            cashDeskNumber: {
-              ...where.cashDeskNumber,
-              [Op.gte]: start,
-            },
-          };
-        }
-
-        if (end !== undefined && end !== null && end !== '') {
-          where = {
-            ...where,
-            cashDeskNumber: {
-              ...where.cashDeskNumber,
-              [Op.lte]: end,
-            },
-          };
-        }
-      }
-
       if (filter.employeeIDRange) {
         const [start, end] = filter.employeeIDRange;
 
@@ -167,6 +143,30 @@ module.exports = class CashierDBApi {
             ...where,
             employeeID: {
               ...where.employeeID,
+              [Op.lte]: end,
+            },
+          };
+        }
+      }
+
+      if (filter.cashDeskNumberRange) {
+        const [start, end] = filter.cashDeskNumberRange;
+
+        if (start !== undefined && start !== null && start !== '') {
+          where = {
+            ...where,
+            cashDeskNumber: {
+              ...where.cashDeskNumber,
+              [Op.gte]: start,
+            },
+          };
+        }
+
+        if (end !== undefined && end !== null && end !== '') {
+          where = {
+            ...where,
+            cashDeskNumber: {
+              ...where.cashDeskNumber,
               [Op.lte]: end,
             },
           };
