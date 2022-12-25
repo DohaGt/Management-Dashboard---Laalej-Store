@@ -1,6 +1,9 @@
 // eslint-disable-next-line
 import * as dataFormat from 'pages/CRUD/Product/table/ProductDataFormatters';
 
+// eslint-disable-next-line
+import * as supplierDataFormat from 'pages/CRUD/Supplier/table/SupplierDataFormatters';
+
 import actions from 'actions/product/productListActions';
 import React from 'react';
 import {Link} from 'react-router-dom';
@@ -56,9 +59,9 @@ const ProductTable = () => {
 
   const [filters, setFilters] = React.useState([
     {label: 'Description', title: 'description'},
-          {label: 'Product Code', title: 'productCode', number: 'true'},{label: 'Quantity On Hand', title: 'quantityOnHand', number: 'true'},{label: 'Min Quantity On Hand', title: 'minQuantityOnHand', number: 'true'},{label: 'Supplier Code', title: 'supplierCode', number: 'true'},
+          {label: 'Product Code', title: 'productCode', number: 'true'},{label: 'Quantity On Hand', title: 'quantityOnHand', number: 'true'},{label: 'Min Quantity On Hand', title: 'minQuantityOnHand', number: 'true'},
           {label: 'Price', title: 'price', number: 'true'},{label: 'Dicount Rate', title: 'dicountRate', number: 'true'},
-
+          {label: 'Supplier Code', title: 'supplierCode'},
   ]);
 
   const [filterItems, setFilterItems] = React.useState([]);
@@ -234,7 +237,9 @@ const ProductTable = () => {
 
       { field: "supplierCode",
 
-        flex: 0.6,
+        sortable: false,
+        renderCell: (params) => supplierDataFormat.listFormatter(params.row[params.field], history, 'supplier'),
+        flex: 1,
 
       headerName: "Supplier Code"
       },

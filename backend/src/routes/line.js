@@ -18,12 +18,6 @@ const router = express.Router();
  *          lineNumber:
  *            type: integer
  *            format: int64
- *          invoiceNumber:
- *            type: integer
- *            format: int64
- *          clientCode:
- *            type: integer
- *            format: int64
  *          quantity:
  *            type: integer
  *            format: int64

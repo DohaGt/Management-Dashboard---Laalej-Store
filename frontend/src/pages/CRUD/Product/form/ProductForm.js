@@ -25,6 +25,8 @@ import PreparedValues from 'components/FormItems/preparedValues';
 import FormValidations from 'components/FormItems/formValidations';
 import Widget from 'components/Widget';
 
+import SupplierSelectItem from 'pages/CRUD/Supplier/helpers/SupplierSelectItem';
+
 const ProductForm = (props) => {
 
   const {
@@ -125,9 +127,11 @@ const ProductForm = (props) => {
       </Grid>
 
       <Grid item>
-        <InputFormItem
-          name={'supplierCode'}
-          schema={productFields}
+        <SupplierSelectItem
+        name={'supplierCode'}
+        schema={productFields}
+        showCreate={!modal}
+        form={form}
         />
       </Grid>
 

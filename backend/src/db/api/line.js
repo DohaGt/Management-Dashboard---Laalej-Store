@@ -22,16 +22,6 @@ module.exports = class LineDBApi {
     null
 ,
 
-    invoiceNumber: data.invoiceNumber
-    ||
-    null
-,
-
-    clientCode: data.clientCode
-    ||
-    null
-,
-
     quantity: data.quantity
     ||
     null
@@ -48,6 +38,14 @@ module.exports = class LineDBApi {
   },
   { transaction },
   );
+
+    await line.setInvoiceNumber(data.invoiceNumber || null, {
+    transaction,
+    });
+
+    await line.setProductCode(data.productCode || null, {
+    transaction,
+    });
 
   return line;
   }
@@ -68,16 +66,6 @@ module.exports = class LineDBApi {
         null
 ,
 
-        invoiceNumber: data.invoiceNumber
-        ||
-        null
-,
-
-        clientCode: data.clientCode
-        ||
-        null
-,
-
         quantity: data.quantity
         ||
         null
@@ -92,6 +80,14 @@ module.exports = class LineDBApi {
       },
       {transaction},
     );
+
+    await line.setInvoiceNumber(data.invoiceNumber || null, {
+      transaction,
+    });
+
+    await line.setProductCode(data.productCode || null, {
+      transaction,
+    });
 
     return line;
   }
@@ -129,6 +125,14 @@ module.exports = class LineDBApi {
 
     const output = line.get({plain: true});
 
+    output.invoiceNumber = await line.getInvoiceNumber({
+      transaction
+    });
+
+    output.productCode = await line.getProductCode({
+      transaction
+    });
+
     return output;
   }
 
@@ -144,6 +148,16 @@ module.exports = class LineDBApi {
     const transaction = (options && options.transaction) || undefined;
     let where = {};
     let include = [
+
+      {
+        model: db.invoice,
+        as: 'invoiceNumber',
+      },
+
+      {
+        model: db.product,
+        as: 'productCode',
+      },
 
     ];
 
@@ -173,54 +187,6 @@ module.exports = class LineDBApi {
             ...where,
             lineNumber: {
               ...where.lineNumber,
-              [Op.lte]: end,
-            },
-          };
-        }
-      }
-
-      if (filter.invoiceNumberRange) {
-        const [start, end] = filter.invoiceNumberRange;
-
-        if (start !== undefined && start !== null && start !== '') {
-          where = {
-            ...where,
-            invoiceNumber: {
-              ...where.invoiceNumber,
-              [Op.gte]: start,
-            },
-          };
-        }
-
-        if (end !== undefined && end !== null && end !== '') {
-          where = {
-            ...where,
-            invoiceNumber: {
-              ...where.invoiceNumber,
-              [Op.lte]: end,
-            },
-          };
-        }
-      }
-
-      if (filter.clientCodeRange) {
-        const [start, end] = filter.clientCodeRange;
-
-        if (start !== undefined && start !== null && start !== '') {
-          where = {
-            ...where,
-            clientCode: {
-              ...where.clientCode,
-              [Op.gte]: start,
-            },
-          };
-        }
-
-        if (end !== undefined && end !== null && end !== '') {
-          where = {
-            ...where,
-            clientCode: {
-              ...where.clientCode,
               [Op.lte]: end,
             },
           };
@@ -286,6 +252,28 @@ module.exports = class LineDBApi {
           active:
             filter.active === true ||
             filter.active === 'true',
+        };
+      }
+
+      if (filter.invoiceNumber) {
+        var listItems = filter.invoiceNumber.split('|').map(item => {
+          return  Utils.uuid(item)
+        });
+
+        where = {
+          ...where,
+          invoiceNumberId: {[Op.or]: listItems}
+        };
+      }
+
+      if (filter.productCode) {
+        var listItems = filter.productCode.split('|').map(item => {
+          return  Utils.uuid(item)
+        });
+
+        where = {
+          ...where,
+          productCodeId: {[Op.or]: listItems}
         };
       }
 

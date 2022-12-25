@@ -29,11 +29,6 @@ invoiceDate: {
 
       },
 
-employeeID: {
-        type: DataTypes.INTEGER,
-
-      },
-
       importHash: {
         type: DataTypes.STRING(255),
         allowNull: true,
@@ -48,6 +43,14 @@ employeeID: {
   );
 
   invoice.associate = (db) => {
+
+    db.invoice.belongsTo(db.employee, {
+      as: 'employeeID',
+      foreignKey: {
+        name: 'employeeIDId',
+      },
+      constraints: false,
+    });
 
     db.invoice.belongsTo(db.users, {
       as: 'createdBy',

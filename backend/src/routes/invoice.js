@@ -21,9 +21,6 @@ const router = express.Router();
  *          clientCode:
  *            type: integer
  *            format: int64
- *          employeeID:
- *            type: integer
- *            format: int64
 
  */
 

@@ -14,11 +14,6 @@ module.exports = function(sequelize, DataTypes) {
         primaryKey: true,
       },
 
-employeeID: {
-        type: DataTypes.INTEGER,
-
-      },
-
 commission: {
         type: DataTypes.DECIMAL,
 
@@ -38,6 +33,14 @@ commission: {
   );
 
   salesperson.associate = (db) => {
+
+    db.salesperson.belongsTo(db.employee, {
+      as: 'employeeID',
+      foreignKey: {
+        name: 'employeeIDId',
+      },
+      constraints: false,
+    });
 
     db.salesperson.belongsTo(db.users, {
       as: 'createdBy',

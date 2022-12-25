@@ -25,6 +25,10 @@ import PreparedValues from 'components/FormItems/preparedValues';
 import FormValidations from 'components/FormItems/formValidations';
 import Widget from 'components/Widget';
 
+import InvoiceSelectItem from 'pages/CRUD/Invoice/helpers/InvoiceSelectItem';
+
+import ProductSelectItem from 'pages/CRUD/Product/helpers/ProductSelectItem';
+
 const LineForm = (props) => {
 
   const {
@@ -81,20 +85,6 @@ const LineForm = (props) => {
 
       <Grid item>
         <InputFormItem
-          name={'invoiceNumber'}
-          schema={lineFields}
-        />
-      </Grid>
-
-      <Grid item>
-        <InputFormItem
-          name={'clientCode'}
-          schema={lineFields}
-        />
-      </Grid>
-
-      <Grid item>
-        <InputFormItem
           name={'quantity'}
           schema={lineFields}
         />
@@ -105,6 +95,24 @@ const LineForm = (props) => {
           name={'unitPrice'}
           schema={lineFields}
 
+        />
+      </Grid>
+
+      <Grid item>
+        <InvoiceSelectItem
+        name={'invoiceNumber'}
+        schema={lineFields}
+        showCreate={!modal}
+        form={form}
+        />
+      </Grid>
+
+      <Grid item>
+        <ProductSelectItem
+        name={'productCode'}
+        schema={lineFields}
+        showCreate={!modal}
+        form={form}
         />
       </Grid>
 

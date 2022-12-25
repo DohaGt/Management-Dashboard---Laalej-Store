@@ -1,6 +1,9 @@
 // eslint-disable-next-line
 import * as dataFormat from 'pages/CRUD/Salesperson/table/SalespersonDataFormatters';
 
+// eslint-disable-next-line
+import * as employeeDataFormat from 'pages/CRUD/Employee/table/EmployeeDataFormatters';
+
 import actions from 'actions/salesperson/salespersonListActions';
 import React from 'react';
 import {Link} from 'react-router-dom';
@@ -56,9 +59,8 @@ const SalespersonTable = () => {
 
   const [filters, setFilters] = React.useState([
 
-          {label: 'Employee ID', title: 'employeeID', number: 'true'},
           {label: 'Commission', title: 'commission', number: 'true'},
-
+          {label: 'Employee ID', title: 'employeeID'},
   ]);
 
   const [filterItems, setFilterItems] = React.useState([]);
@@ -187,7 +189,9 @@ const SalespersonTable = () => {
 
       { field: "employeeID",
 
-        flex: 0.6,
+        sortable: false,
+        renderCell: (params) => employeeDataFormat.listFormatter(params.row[params.field], history, 'employee'),
+        flex: 1,
 
       headerName: "Employee ID"
       },

@@ -17,11 +17,6 @@ module.exports = class AdminhistoryDBApi {
   {
   id: data.id || undefined,
 
-    employeeID: data.employeeID
-    ||
-    null
-,
-
     startDate: data.startDate
     ||
     null
@@ -39,6 +34,10 @@ module.exports = class AdminhistoryDBApi {
   { transaction },
   );
 
+    await adminhistory.setEmployeeID(data.employeeID || null, {
+    transaction,
+    });
+
   return adminhistory;
   }
 
@@ -52,11 +51,6 @@ module.exports = class AdminhistoryDBApi {
 
     await adminhistory.update(
       {
-
-        employeeID: data.employeeID
-        ||
-        null
-,
 
         startDate: data.startDate
         ||
@@ -72,6 +66,10 @@ module.exports = class AdminhistoryDBApi {
       },
       {transaction},
     );
+
+    await adminhistory.setEmployeeID(data.employeeID || null, {
+      transaction,
+    });
 
     return adminhistory;
   }
@@ -109,6 +107,10 @@ module.exports = class AdminhistoryDBApi {
 
     const output = adminhistory.get({plain: true});
 
+    output.employeeID = await adminhistory.getEmployeeID({
+      transaction
+    });
+
     return output;
   }
 
@@ -125,6 +127,11 @@ module.exports = class AdminhistoryDBApi {
     let where = {};
     let include = [
 
+      {
+        model: db.employee,
+        as: 'employeeID',
+      },
+
     ];
 
     if (filter) {
@@ -133,30 +140,6 @@ module.exports = class AdminhistoryDBApi {
           ...where,
           ['id']: Utils.uuid(filter.id),
         };
-      }
-
-      if (filter.employeeIDRange) {
-        const [start, end] = filter.employeeIDRange;
-
-        if (start !== undefined && start !== null && start !== '') {
-          where = {
-            ...where,
-            employeeID: {
-              ...where.employeeID,
-              [Op.gte]: start,
-            },
-          };
-        }
-
-        if (end !== undefined && end !== null && end !== '') {
-          where = {
-            ...where,
-            employeeID: {
-              ...where.employeeID,
-              [Op.lte]: end,
-            },
-          };
-        }
       }
 
       if (filter.startDateRange) {
@@ -218,6 +201,17 @@ module.exports = class AdminhistoryDBApi {
           active:
             filter.active === true ||
             filter.active === 'true',
+        };
+      }
+
+      if (filter.employeeID) {
+        var listItems = filter.employeeID.split('|').map(item => {
+          return  Utils.uuid(item)
+        });
+
+        where = {
+          ...where,
+          employeeIDId: {[Op.or]: listItems}
         };
       }
 

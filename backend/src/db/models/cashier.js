@@ -14,11 +14,6 @@ module.exports = function(sequelize, DataTypes) {
         primaryKey: true,
       },
 
-employeeID: {
-        type: DataTypes.INTEGER,
-
-      },
-
 cashDeskNumber: {
         type: DataTypes.INTEGER,
 
@@ -38,6 +33,14 @@ cashDeskNumber: {
   );
 
   cashier.associate = (db) => {
+
+    db.cashier.belongsTo(db.employee, {
+      as: 'employeeID',
+      foreignKey: {
+        name: 'employeeIDId',
+      },
+      constraints: false,
+    });
 
     db.cashier.belongsTo(db.users, {
       as: 'createdBy',

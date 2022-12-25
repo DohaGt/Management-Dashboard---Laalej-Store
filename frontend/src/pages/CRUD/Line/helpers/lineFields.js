@@ -6,26 +6,6 @@ const lineFields = {
 
     },
 
-    invoiceNumber: { type: 'int', label: 'Invoice Number',
-
-    options: [
-
-    { value: 'value', label: 'value' },
-
-]
-
-    },
-
-    clientCode: { type: 'int', label: 'Client Code',
-
-    options: [
-
-    { value: 'value', label: 'value' },
-
-]
-
-    },
-
     quantity: { type: 'int', label: 'Quantity',
 
     options: [
@@ -37,6 +17,26 @@ const lineFields = {
     },
 
     unitPrice: { type: 'decimal', label: 'Unit Price',
+
+    options: [
+
+    { value: 'value', label: 'value' },
+
+]
+
+    },
+
+    invoiceNumber: { type: 'relation_one', label: 'Invoice Number',
+
+    options: [
+
+    { value: 'value', label: 'value' },
+
+]
+
+    },
+
+    productCode: { type: 'relation_one', label: 'Product Code',
 
     options: [
 

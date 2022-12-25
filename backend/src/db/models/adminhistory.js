@@ -14,11 +14,6 @@ module.exports = function(sequelize, DataTypes) {
         primaryKey: true,
       },
 
-employeeID: {
-        type: DataTypes.INTEGER,
-
-      },
-
 startDate: {
         type: DataTypes.DATEONLY,
 
@@ -59,6 +54,14 @@ endDate: {
   );
 
   adminhistory.associate = (db) => {
+
+    db.adminhistory.belongsTo(db.employee, {
+      as: 'employeeID',
+      foreignKey: {
+        name: 'employeeIDId',
+      },
+      constraints: false,
+    });
 
     db.adminhistory.belongsTo(db.users, {
       as: 'createdBy',

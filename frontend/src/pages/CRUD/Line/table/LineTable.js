@@ -1,6 +1,11 @@
 // eslint-disable-next-line
 import * as dataFormat from 'pages/CRUD/Line/table/LineDataFormatters';
 
+// eslint-disable-next-line
+import * as invoiceDataFormat from 'pages/CRUD/Invoice/table/InvoiceDataFormatters';
+// eslint-disable-next-line
+import * as productDataFormat from 'pages/CRUD/Product/table/ProductDataFormatters';
+
 import actions from 'actions/line/lineListActions';
 import React from 'react';
 import {Link} from 'react-router-dom';
@@ -56,9 +61,9 @@ const LineTable = () => {
 
   const [filters, setFilters] = React.useState([
 
-          {label: 'Line Number', title: 'lineNumber', number: 'true'},{label: 'Invoice Number', title: 'invoiceNumber', number: 'true'},{label: 'Client Code', title: 'clientCode', number: 'true'},{label: 'Quantity', title: 'quantity', number: 'true'},
+          {label: 'Line Number', title: 'lineNumber', number: 'true'},{label: 'Quantity', title: 'quantity', number: 'true'},
           {label: 'Unit Price', title: 'unitPrice', number: 'true'},
-
+          {label: 'Invoice Number', title: 'invoiceNumber'},{label: 'Product Code', title: 'productCode'},
   ]);
 
   const [filterItems, setFilterItems] = React.useState([]);
@@ -192,20 +197,6 @@ const LineTable = () => {
       headerName: "Line Number"
       },
 
-      { field: "invoiceNumber",
-
-        flex: 0.6,
-
-      headerName: "Invoice Number"
-      },
-
-      { field: "clientCode",
-
-        flex: 0.6,
-
-      headerName: "Client Code"
-      },
-
       { field: "quantity",
 
         flex: 0.6,
@@ -218,6 +209,24 @@ const LineTable = () => {
         flex: 0.6,
 
       headerName: "Unit Price"
+      },
+
+      { field: "invoiceNumber",
+
+        sortable: false,
+        renderCell: (params) => invoiceDataFormat.listFormatter(params.row[params.field], history, 'invoice'),
+        flex: 1,
+
+      headerName: "Invoice Number"
+      },
+
+      { field: "productCode",
+
+        sortable: false,
+        renderCell: (params) => productDataFormat.listFormatter(params.row[params.field], history, 'product'),
+        flex: 1,
+
+      headerName: "Product Code"
       },
 
       {

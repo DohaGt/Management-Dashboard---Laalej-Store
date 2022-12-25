@@ -28,9 +28,6 @@ const router = express.Router();
  *          minQuantityOnHand:
  *            type: integer
  *            format: int64
- *          supplierCode:
- *            type: integer
- *            format: int64
 
  *          price:
  *            type: integer

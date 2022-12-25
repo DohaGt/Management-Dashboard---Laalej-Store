@@ -57,11 +57,6 @@ dicountRate: {
 
       },
 
-supplierCode: {
-        type: DataTypes.INTEGER,
-
-      },
-
       importHash: {
         type: DataTypes.STRING(255),
         allowNull: true,
@@ -76,6 +71,14 @@ supplierCode: {
   );
 
   product.associate = (db) => {
+
+    db.product.belongsTo(db.supplier, {
+      as: 'supplierCode',
+      foreignKey: {
+        name: 'supplierCodeId',
+      },
+      constraints: false,
+    });
 
     db.product.belongsTo(db.users, {
       as: 'createdBy',

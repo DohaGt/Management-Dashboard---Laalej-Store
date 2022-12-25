@@ -10,7 +10,7 @@ const config = {
     saltRounds: 12
   },
   admin_pass: "password",
-  admin_email: "admin@flatlogic.com",
+  admin_email: "d.guettioui@aui.ma",
   providers: {
     LOCAL: 'local',
     GOOGLE: 'google',

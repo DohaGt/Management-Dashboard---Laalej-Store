@@ -1,6 +1,9 @@
 // eslint-disable-next-line
 import * as dataFormat from 'pages/CRUD/Cashier/table/CashierDataFormatters';
 
+// eslint-disable-next-line
+import * as employeeDataFormat from 'pages/CRUD/Employee/table/EmployeeDataFormatters';
+
 import actions from 'actions/cashier/cashierListActions';
 import React from 'react';
 import {Link} from 'react-router-dom';
@@ -56,8 +59,9 @@ const CashierTable = () => {
 
   const [filters, setFilters] = React.useState([
 
-          {label: 'Employee ID', title: 'employeeID', number: 'true'},{label: 'Cash Desk Number', title: 'cashDeskNumber', number: 'true'},
+          {label: 'Cash Desk Number', title: 'cashDeskNumber', number: 'true'},
 
+          {label: 'Employee ID', title: 'employeeID'},
   ]);
 
   const [filterItems, setFilterItems] = React.useState([]);
@@ -186,7 +190,9 @@ const CashierTable = () => {
 
       { field: "employeeID",
 
-        flex: 0.6,
+        sortable: false,
+        renderCell: (params) => employeeDataFormat.listFormatter(params.row[params.field], history, 'employee'),
+        flex: 1,
 
       headerName: "Employee ID"
       },

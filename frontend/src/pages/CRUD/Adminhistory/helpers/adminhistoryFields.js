@@ -2,7 +2,7 @@
 const adminhistoryFields = {
 	id: { type: 'id', label: 'ID' },
 
-    employeeID: { type: 'int', label: 'Employee ID',
+    employeeID: { type: 'relation_one', label: 'Employee ID',
 
     options: [
 

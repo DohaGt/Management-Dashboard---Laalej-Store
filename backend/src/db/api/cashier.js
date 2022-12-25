@@ -17,11 +17,6 @@ module.exports = class CashierDBApi {
   {
   id: data.id || undefined,
 
-    employeeID: data.employeeID
-    ||
-    null
-,
-
     cashDeskNumber: data.cashDeskNumber
     ||
     null
@@ -33,6 +28,10 @@ module.exports = class CashierDBApi {
   },
   { transaction },
   );
+
+    await cashier.setEmployeeID(data.employeeID || null, {
+    transaction,
+    });
 
   return cashier;
   }
@@ -48,11 +47,6 @@ module.exports = class CashierDBApi {
     await cashier.update(
       {
 
-        employeeID: data.employeeID
-        ||
-        null
-,
-
         cashDeskNumber: data.cashDeskNumber
         ||
         null
@@ -62,6 +56,10 @@ module.exports = class CashierDBApi {
       },
       {transaction},
     );
+
+    await cashier.setEmployeeID(data.employeeID || null, {
+      transaction,
+    });
 
     return cashier;
   }
@@ -99,6 +97,10 @@ module.exports = class CashierDBApi {
 
     const output = cashier.get({plain: true});
 
+    output.employeeID = await cashier.getEmployeeID({
+      transaction
+    });
+
     return output;
   }
 
@@ -115,6 +117,11 @@ module.exports = class CashierDBApi {
     let where = {};
     let include = [
 
+      {
+        model: db.employee,
+        as: 'employeeID',
+      },
+
     ];
 
     if (filter) {
@@ -123,30 +130,6 @@ module.exports = class CashierDBApi {
           ...where,
           ['id']: Utils.uuid(filter.id),
         };
-      }
-
-      if (filter.employeeIDRange) {
-        const [start, end] = filter.employeeIDRange;
-
-        if (start !== undefined && start !== null && start !== '') {
-          where = {
-            ...where,
-            employeeID: {
-              ...where.employeeID,
-              [Op.gte]: start,
-            },
-          };
-        }
-
-        if (end !== undefined && end !== null && end !== '') {
-          where = {
-            ...where,
-            employeeID: {
-              ...where.employeeID,
-              [Op.lte]: end,
-            },
-          };
-        }
       }
 
       if (filter.cashDeskNumberRange) {
@@ -184,6 +167,17 @@ module.exports = class CashierDBApi {
           active:
             filter.active === true ||
             filter.active === 'true',
+        };
+      }
+
+      if (filter.employeeID) {
+        var listItems = filter.employeeID.split('|').map(item => {
+          return  Utils.uuid(item)
+        });
+
+        where = {
+          ...where,
+          employeeIDId: {[Op.or]: listItems}
         };
       }
 

@@ -47,13 +47,6 @@ $$;
 
 
 
-
-
-
-
-
-
-
 -- Stored procedure 
 
 DROP PROCEDURE IF EXISTS spPrintProdPrices;

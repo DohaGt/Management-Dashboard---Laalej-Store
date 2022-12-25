@@ -19,16 +19,6 @@ lineNumber: {
 
       },
 
-invoiceNumber: {
-        type: DataTypes.INTEGER,
-
-      },
-
-clientCode: {
-        type: DataTypes.INTEGER,
-
-      },
-
 quantity: {
         type: DataTypes.INTEGER,
 
@@ -53,6 +43,22 @@ unitPrice: {
   );
 
   line.associate = (db) => {
+
+    db.line.belongsTo(db.invoice, {
+      as: 'invoiceNumber',
+      foreignKey: {
+        name: 'invoiceNumberId',
+      },
+      constraints: false,
+    });
+
+    db.line.belongsTo(db.product, {
+      as: 'productCode',
+      foreignKey: {
+        name: 'productCodeId',
+      },
+      constraints: false,
+    });
 
     db.line.belongsTo(db.users, {
       as: 'createdBy',

@@ -66,7 +66,7 @@ const productFields = {
 
     },
 
-    supplierCode: { type: 'int', label: 'Supplier Code',
+    supplierCode: { type: 'relation_one', label: 'Supplier Code',
 
     options: [
 

@@ -52,17 +52,16 @@ module.exports = class ProductDBApi {
     null
 ,
 
-    supplierCode: data.supplierCode
-    ||
-    null
-,
-
   importHash: data.importHash || null,
   createdById: currentUser.id,
   updatedById: currentUser.id,
   },
   { transaction },
   );
+
+    await product.setSupplierCode(data.supplierCode || null, {
+    transaction,
+    });
 
   return product;
   }
@@ -113,15 +112,14 @@ module.exports = class ProductDBApi {
         null
 ,
 
-        supplierCode: data.supplierCode
-        ||
-        null
-,
-
         updatedById: currentUser.id,
       },
       {transaction},
     );
+
+    await product.setSupplierCode(data.supplierCode || null, {
+      transaction,
+    });
 
     return product;
   }
@@ -159,6 +157,10 @@ module.exports = class ProductDBApi {
 
     const output = product.get({plain: true});
 
+    output.supplierCode = await product.getSupplierCode({
+      transaction
+    });
+
     return output;
   }
 
@@ -174,6 +176,11 @@ module.exports = class ProductDBApi {
     const transaction = (options && options.transaction) || undefined;
     let where = {};
     let include = [
+
+      {
+        model: db.supplier,
+        as: 'supplierCode',
+      },
 
     ];
 
@@ -340,30 +347,6 @@ module.exports = class ProductDBApi {
         }
       }
 
-      if (filter.supplierCodeRange) {
-        const [start, end] = filter.supplierCodeRange;
-
-        if (start !== undefined && start !== null && start !== '') {
-          where = {
-            ...where,
-            supplierCode: {
-              ...where.supplierCode,
-              [Op.gte]: start,
-            },
-          };
-        }
-
-        if (end !== undefined && end !== null && end !== '') {
-          where = {
-            ...where,
-            supplierCode: {
-              ...where.supplierCode,
-              [Op.lte]: end,
-            },
-          };
-        }
-      }
-
       if (
         filter.active === true ||
         filter.active === 'true' ||
@@ -375,6 +358,17 @@ module.exports = class ProductDBApi {
           active:
             filter.active === true ||
             filter.active === 'true',
+        };
+      }
+
+      if (filter.supplierCode) {
+        var listItems = filter.supplierCode.split('|').map(item => {
+          return  Utils.uuid(item)
+        });
+
+        where = {
+          ...where,
+          supplierCodeId: {[Op.or]: listItems}
         };
       }
 

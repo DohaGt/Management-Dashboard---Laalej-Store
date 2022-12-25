@@ -17,11 +17,6 @@ module.exports = class SalespersonDBApi {
   {
   id: data.id || undefined,
 
-    employeeID: data.employeeID
-    ||
-    null
-,
-
     commission: data.commission
     ||
     null
@@ -33,6 +28,10 @@ module.exports = class SalespersonDBApi {
   },
   { transaction },
   );
+
+    await salesperson.setEmployeeID(data.employeeID || null, {
+    transaction,
+    });
 
   return salesperson;
   }
@@ -48,11 +47,6 @@ module.exports = class SalespersonDBApi {
     await salesperson.update(
       {
 
-        employeeID: data.employeeID
-        ||
-        null
-,
-
         commission: data.commission
         ||
         null
@@ -62,6 +56,10 @@ module.exports = class SalespersonDBApi {
       },
       {transaction},
     );
+
+    await salesperson.setEmployeeID(data.employeeID || null, {
+      transaction,
+    });
 
     return salesperson;
   }
@@ -99,6 +97,10 @@ module.exports = class SalespersonDBApi {
 
     const output = salesperson.get({plain: true});
 
+    output.employeeID = await salesperson.getEmployeeID({
+      transaction
+    });
+
     return output;
   }
 
@@ -115,6 +117,11 @@ module.exports = class SalespersonDBApi {
     let where = {};
     let include = [
 
+      {
+        model: db.employee,
+        as: 'employeeID',
+      },
+
     ];
 
     if (filter) {
@@ -123,30 +130,6 @@ module.exports = class SalespersonDBApi {
           ...where,
           ['id']: Utils.uuid(filter.id),
         };
-      }
-
-      if (filter.employeeIDRange) {
-        const [start, end] = filter.employeeIDRange;
-
-        if (start !== undefined && start !== null && start !== '') {
-          where = {
-            ...where,
-            employeeID: {
-              ...where.employeeID,
-              [Op.gte]: start,
-            },
-          };
-        }
-
-        if (end !== undefined && end !== null && end !== '') {
-          where = {
-            ...where,
-            employeeID: {
-              ...where.employeeID,
-              [Op.lte]: end,
-            },
-          };
-        }
       }
 
       if (filter.commissionRange) {
@@ -184,6 +167,17 @@ module.exports = class SalespersonDBApi {
           active:
             filter.active === true ||
             filter.active === 'true',
+        };
+      }
+
+      if (filter.employeeID) {
+        var listItems = filter.employeeID.split('|').map(item => {
+          return  Utils.uuid(item)
+        });
+
+        where = {
+          ...where,
+          employeeIDId: {[Op.or]: listItems}
         };
       }
 

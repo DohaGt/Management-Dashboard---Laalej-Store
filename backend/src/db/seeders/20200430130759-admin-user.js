@@ -20,7 +20,7 @@ module.exports = {
         emailVerified: true,
         role: 'admin',
         provider: config.providers.LOCAL,
-        password:'AUI1234'
+        password:'AUI1234',
         createdAt: new Date(),
         updatedAt: new Date()
       },
