@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const moment = require('moment');
 
-module.exports = function (sequelize, DataTypes) {
+module.exports = function(sequelize, DataTypes) {
   const employee = sequelize.define(
     'employee',
     {
@@ -14,44 +14,62 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
       },
 
-      employeeID: {
+employeeID: {
         type: DataTypes.INTEGER,
+
       },
 
-      lastName: {
+lastName: {
         type: DataTypes.TEXT,
+
       },
 
-      firstName: {
+firstName: {
         type: DataTypes.TEXT,
+
       },
 
-      zipCode: {
+zipCode: {
         type: DataTypes.INTEGER,
+
       },
 
-      phoneNumber: {
+phoneNumber: {
         type: DataTypes.TEXT,
+
       },
 
-      hireDate: {
+hireDate: {
         type: DataTypes.DATEONLY,
 
-        get: function () {
+        get: function() {
           return this.getDataValue('hireDate')
-            ? moment.utc(this.getDataValue('hireDate')).format('YYYY-MM-DD')
+            ? moment
+                .utc(this.getDataValue('hireDate'))
+                .format('YYYY-MM-DD')
             : null;
         },
+
       },
 
-      salary: {
+salary: {
         type: DataTypes.DECIMAL,
+
       },
 
-      employeeType: {
+employeeType: {
         type: DataTypes.ENUM,
 
-        values: ['Cashier', 'Administrator', 'Salesperson'],
+        values: [
+
+"Cashier",
+
+"Administrator",
+
+"Salesperson"
+
+        ],
+
       },
 
       importHash: {
@@ -68,6 +86,7 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   employee.associate = (db) => {
+
     db.employee.belongsTo(db.users, {
       as: 'createdBy',
     });
@@ -79,3 +98,4 @@ module.exports = function (sequelize, DataTypes) {
 
   return employee;
 };
+

@@ -1,3 +1,4 @@
+
 const db = require('../models');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
@@ -7,28 +8,37 @@ const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
 module.exports = class CashierDBApi {
+
   static async create(data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
-    const transaction = (options && options.transaction) || undefined;
+  const currentUser = (options && options.currentUser) || { id: null };
+  const transaction = (options && options.transaction) || undefined;
 
-    const cashier = await db.cashier.create(
-      {
-        id: data.id || undefined,
+  const cashier = await db.cashier.create(
+  {
+  id: data.id || undefined,
 
-        cashDeskNumber: data.cashDeskNumber || null,
-        employeeID: data.employeeID || null,
-        importHash: data.importHash || null,
-        createdById: currentUser.id,
-        updatedById: currentUser.id,
-      },
-      { transaction },
-    );
+    employeeID: data.employeeID
+    ||
+    null
+,
 
-    return cashier;
+    cashDeskNumber: data.cashDeskNumber
+    ||
+    null
+,
+
+  importHash: data.importHash || null,
+  createdById: currentUser.id,
+  updatedById: currentUser.id,
+  },
+  { transaction },
+  );
+
+  return cashier;
   }
 
   static async update(id, data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const cashier = await db.cashier.findByPk(id, {
@@ -37,33 +47,39 @@ module.exports = class CashierDBApi {
 
     await cashier.update(
       {
-        cashDeskNumber: data.cashDeskNumber || null,
-        employeeID: data.employeeID || null,
+
+        employeeID: data.employeeID
+        ||
+        null
+,
+
+        cashDeskNumber: data.cashDeskNumber
+        ||
+        null
+,
+
         updatedById: currentUser.id,
       },
-      { transaction },
+      {transaction},
     );
 
     return cashier;
   }
 
   static async remove(id, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const cashier = await db.cashier.findByPk(id, options);
 
-    await cashier.update(
-      {
-        deletedBy: currentUser.id,
-      },
-      {
-        transaction,
-      },
-    );
+    await cashier.update({
+      deletedBy: currentUser.id
+    }, {
+      transaction,
+    });
 
     await cashier.destroy({
-      transaction,
+      transaction
     });
 
     return cashier;
@@ -72,13 +88,16 @@ module.exports = class CashierDBApi {
   static async findBy(where, options) {
     const transaction = (options && options.transaction) || undefined;
 
-    const cashier = await db.cashier.findOne({ where }, { transaction });
+    const cashier = await db.cashier.findOne(
+      { where },
+      { transaction },
+    );
 
     if (!cashier) {
       return cashier;
     }
 
-    const output = cashier.get({ plain: true });
+    const output = cashier.get({plain: true});
 
     return output;
   }
@@ -94,7 +113,9 @@ module.exports = class CashierDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [];
+    let include = [
+
+    ];
 
     if (filter) {
       if (filter.id) {
@@ -102,30 +123,6 @@ module.exports = class CashierDBApi {
           ...where,
           ['id']: Utils.uuid(filter.id),
         };
-      }
-
-      if (filter.cashDeskNumberRange) {
-        const [start, end] = filter.cashDeskNumberRange;
-
-        if (start !== undefined && start !== null && start !== '') {
-          where = {
-            ...where,
-            cashDeskNumber: {
-              ...where.cashDeskNumber,
-              [Op.gte]: start,
-            },
-          };
-        }
-
-        if (end !== undefined && end !== null && end !== '') {
-          where = {
-            ...where,
-            cashDeskNumber: {
-              ...where.cashDeskNumber,
-              [Op.lte]: end,
-            },
-          };
-        }
       }
 
       if (filter.employeeIDRange) {
@@ -152,6 +149,30 @@ module.exports = class CashierDBApi {
         }
       }
 
+      if (filter.cashDeskNumberRange) {
+        const [start, end] = filter.cashDeskNumberRange;
+
+        if (start !== undefined && start !== null && start !== '') {
+          where = {
+            ...where,
+            cashDeskNumber: {
+              ...where.cashDeskNumber,
+              [Op.gte]: start,
+            },
+          };
+        }
+
+        if (end !== undefined && end !== null && end !== '') {
+          where = {
+            ...where,
+            cashDeskNumber: {
+              ...where.cashDeskNumber,
+              [Op.lte]: end,
+            },
+          };
+        }
+      }
+
       if (
         filter.active === true ||
         filter.active === 'true' ||
@@ -160,7 +181,9 @@ module.exports = class CashierDBApi {
       ) {
         where = {
           ...where,
-          active: filter.active === true || filter.active === 'true',
+          active:
+            filter.active === true ||
+            filter.active === 'true',
         };
       }
 
@@ -189,23 +212,24 @@ module.exports = class CashierDBApi {
       }
     }
 
-    let { rows, count } = await db.cashier.findAndCountAll({
-      where,
-      include,
-      distinct: true,
-      limit: limit ? Number(limit) : undefined,
-      offset: offset ? Number(offset) : undefined,
-      order:
-        filter.field && filter.sort
+    let { rows, count } = await db.cashier.findAndCountAll(
+      {
+        where,
+        include,
+        distinct: true,
+        limit: limit ? Number(limit) : undefined,
+        offset: offset ? Number(offset) : undefined,
+        order: (filter.field && filter.sort)
           ? [[filter.field, filter.sort]]
           : [['createdAt', 'desc']],
-      transaction,
-    });
+        transaction,
+      },
+    );
 
-    //    rows = await this._fillWithRelationsAndFilesForRows(
-    //      rows,
-    //      options,
-    //    );
+//    rows = await this._fillWithRelationsAndFilesForRows(
+//      rows,
+//      options,
+//    );
 
     return { rows, count };
   }
@@ -217,13 +241,17 @@ module.exports = class CashierDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('cashier', 'id', query),
+          Utils.ilike(
+            'cashier',
+            'id',
+            query,
+          ),
         ],
       };
     }
 
     const records = await db.cashier.findAll({
-      attributes: ['id', 'id'],
+      attributes: [ 'id', 'id' ],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['id', 'ASC']],
@@ -234,4 +262,6 @@ module.exports = class CashierDBApi {
       label: record.id,
     }));
   }
+
 };
+

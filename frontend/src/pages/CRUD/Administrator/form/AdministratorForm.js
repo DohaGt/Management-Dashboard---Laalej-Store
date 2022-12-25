@@ -25,104 +25,106 @@ import PreparedValues from 'components/FormItems/preparedValues';
 import FormValidations from 'components/FormItems/formValidations';
 import Widget from 'components/Widget';
 
+import EmployeeSelectItem from 'pages/CRUD/Employee/helpers/EmployeeSelectItem';
+
 const AdministratorForm = (props) => {
+
   const {
-    isEditing,
-    isProfile,
-    findLoading,
-    saveLoading,
-    record,
-    onSubmit,
-    onCancel,
-    modal,
+  isEditing,
+  isProfile,
+  findLoading,
+  saveLoading,
+  record,
+  onSubmit,
+  onCancel,
+  modal
   } = props;
 
   const iniValues = () => {
-    return IniValues(administratorFields, record || {});
-  };
+  return IniValues(administratorFields, record || {});
+  }
 
   const formValidations = () => {
-    return FormValidations(administratorFields, record || {});
-  };
+  return FormValidations(administratorFields, record || {});
+  }
 
   const handleSubmit = (values) => {
-    const { id, ...data } = PreparedValues(administratorFields, values || {});
-    onSubmit(id, data);
+  const { id, ...data } = PreparedValues(administratorFields, values || {});
+  onSubmit(id, data);
   };
 
   const title = () => {
-    if (isProfile) {
-      return 'Edit My Profile';
-    }
+  if(isProfile) {
+  return 'Edit My Profile';
+  }
 
-    return isEditing ? 'Edit Administrator' : 'Add Administrator';
+  return isEditing
+  ? 'Edit Administrator'
+  : 'Add Administrator';
   };
 
   const renderForm = () => (
-    <Widget title={<h4>{title()}</h4>} collapse close>
-      <Formik
-        onSubmit={handleSubmit}
-        initialValues={iniValues()}
-        validationSchema={formValidations()}
-      >
-        {(form) => (
-          <form onSubmit={form.handleSubmit}>
-            <Grid container spacing={3} direction='column'>
-              <Grid item>
-                <InputFormItem
-                  name={'password'}
-                  schema={administratorFields}
-                  autoFocus
-                />
-              </Grid>
+  <Widget title={<h4>{title()}</h4>} collapse close>
+  <Formik
+          onSubmit={handleSubmit}
+  initialValues={iniValues()}
+  validationSchema={formValidations()}
+  >
+  {(form) => (
+  <form onSubmit={form.handleSubmit}>
+    <Grid container spacing={3} direction="column">
 
-              <Grid item>
-                <InputFormItem
-                  name={'employeeID'}
-                  schema={administratorFields}
-                />
-              </Grid>
-            </Grid>
-            <Grid container spacing={3} mt={2}>
-              <Grid item>
-                <Button
-                  color='primary'
-                  variant='contained'
-                  onClick={form.handleSubmit}
-                >
-                  Save
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button
-                  color='primary'
-                  variant='outlined'
-                  onClick={form.handleReset}
-                >
-                  Reset
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button
-                  color='primary'
-                  variant='outlined'
-                  onClick={() => onCancel()}
-                >
-                  Cancel
-                </Button>
-              </Grid>
-            </Grid>
-          </form>
-        )}
-      </Formik>
-    </Widget>
+      <Grid item>
+        <EmployeeSelectItem
+        name={'employeeID'}
+        schema={administratorFields}
+        showCreate={!modal}
+        form={form}
+        />
+      </Grid>
+
+  </Grid>
+  <Grid container spacing={3} mt={2}>
+    <Grid item>
+      <Button
+        color="primary"
+        variant="contained"
+        onClick={form.handleSubmit}
+      >
+        Save
+      </Button>
+    </Grid>
+    <Grid item>
+      <Button
+        color="primary"
+        variant="outlined"
+        onClick={form.handleReset}
+      >
+        Reset
+      </Button>
+    </Grid>
+    <Grid item>
+      <Button
+        color="primary"
+        variant="outlined"
+        onClick={() => onCancel()}
+      >
+        Cancel
+      </Button>
+    </Grid>
+  </Grid>
+      </form>
+      )
+      }
+    </Formik>
+  </Widget>
   );
   if (findLoading) {
-    return <Loader />;
+  return <Loader />;
   }
   if (isEditing && !record) {
-    return <Loader />;
+  return <Loader />;
   }
   return renderForm();
-};
-export default AdministratorForm;
+  }
+  export default AdministratorForm;

@@ -17,14 +17,14 @@ const actions = {
         type: 'ADMINHISTORY_FORM_FIND_STARTED',
       });
 
-      axios.get(`/adminhistory/${id}`).then((res) => {
+      axios.get(`/adminhistory/${id}`).then(res => {
         const record = res.data;
 
         dispatch({
           type: 'ADMINHISTORY_FORM_FIND_SUCCESS',
           payload: record,
         });
-      });
+      })
     } catch (error) {
       Errors.handle(error);
 
@@ -42,13 +42,13 @@ const actions = {
         type: 'ADMINHISTORY_FORM_CREATE_STARTED',
       });
 
-      axios.post('/adminhistory', { data: values }).then((res) => {
+      axios.post('/adminhistory', { data: values }).then(res => {
         dispatch({
           type: 'ADMINHISTORY_FORM_CREATE_SUCCESS',
         });
         showSnackbar({ type: 'success', message: 'Adminhistory created' });
         dispatch(push('/admin/adminhistory'));
-      });
+      })
     } catch (error) {
       Errors.handle(error);
 
@@ -58,13 +58,16 @@ const actions = {
     }
   },
 
-  doUpdate: (id, values, isProfile) => async (dispatch, getState) => {
+  doUpdate: (id, values, isProfile) => async (
+    dispatch,
+    getState,
+  ) => {
     try {
       dispatch({
         type: 'ADMINHISTORY_FORM_UPDATE_STARTED',
       });
 
-      await axios.put(`/adminhistory/${id}`, { id, data: values });
+      await axios.put(`/adminhistory/${id}`, {id, data: values});
 
       dispatch(doInit());
 

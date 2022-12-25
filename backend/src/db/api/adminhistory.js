@@ -1,3 +1,4 @@
+
 const db = require('../models');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
@@ -7,29 +8,42 @@ const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
 module.exports = class AdminhistoryDBApi {
+
   static async create(data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
-    const transaction = (options && options.transaction) || undefined;
+  const currentUser = (options && options.currentUser) || { id: null };
+  const transaction = (options && options.transaction) || undefined;
 
-    const adminhistory = await db.adminhistory.create(
-      {
-        id: data.id || undefined,
+  const adminhistory = await db.adminhistory.create(
+  {
+  id: data.id || undefined,
 
-        startDate: data.startDate || null,
-        endDate: data.endDate || null,
-        employeeID: data.employeeID || null,
-        importHash: data.importHash || null,
-        createdById: currentUser.id,
-        updatedById: currentUser.id,
-      },
-      { transaction },
-    );
+    employeeID: data.employeeID
+    ||
+    null
+,
 
-    return adminhistory;
+    startDate: data.startDate
+    ||
+    null
+,
+
+    endDate: data.endDate
+    ||
+    null
+,
+
+  importHash: data.importHash || null,
+  createdById: currentUser.id,
+  updatedById: currentUser.id,
+  },
+  { transaction },
+  );
+
+  return adminhistory;
   }
 
   static async update(id, data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const adminhistory = await db.adminhistory.findByPk(id, {
@@ -38,34 +52,44 @@ module.exports = class AdminhistoryDBApi {
 
     await adminhistory.update(
       {
-        startDate: data.startDate || null,
-        endDate: data.endDate || null,
-        employeeID: data.employeeID || null,
+
+        employeeID: data.employeeID
+        ||
+        null
+,
+
+        startDate: data.startDate
+        ||
+        null
+,
+
+        endDate: data.endDate
+        ||
+        null
+,
+
         updatedById: currentUser.id,
       },
-      { transaction },
+      {transaction},
     );
 
     return adminhistory;
   }
 
   static async remove(id, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const adminhistory = await db.adminhistory.findByPk(id, options);
 
-    await adminhistory.update(
-      {
-        deletedBy: currentUser.id,
-      },
-      {
-        transaction,
-      },
-    );
+    await adminhistory.update({
+      deletedBy: currentUser.id
+    }, {
+      transaction,
+    });
 
     await adminhistory.destroy({
-      transaction,
+      transaction
     });
 
     return adminhistory;
@@ -83,7 +107,7 @@ module.exports = class AdminhistoryDBApi {
       return adminhistory;
     }
 
-    const output = adminhistory.get({ plain: true });
+    const output = adminhistory.get({plain: true});
 
     return output;
   }
@@ -99,7 +123,9 @@ module.exports = class AdminhistoryDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [];
+    let include = [
+
+    ];
 
     if (filter) {
       if (filter.id) {
@@ -107,6 +133,30 @@ module.exports = class AdminhistoryDBApi {
           ...where,
           ['id']: Utils.uuid(filter.id),
         };
+      }
+
+      if (filter.employeeIDRange) {
+        const [start, end] = filter.employeeIDRange;
+
+        if (start !== undefined && start !== null && start !== '') {
+          where = {
+            ...where,
+            employeeID: {
+              ...where.employeeID,
+              [Op.gte]: start,
+            },
+          };
+        }
+
+        if (end !== undefined && end !== null && end !== '') {
+          where = {
+            ...where,
+            employeeID: {
+              ...where.employeeID,
+              [Op.lte]: end,
+            },
+          };
+        }
       }
 
       if (filter.startDateRange) {
@@ -157,30 +207,6 @@ module.exports = class AdminhistoryDBApi {
         }
       }
 
-      if (filter.employeeIDRange) {
-        const [start, end] = filter.employeeIDRange;
-
-        if (start !== undefined && start !== null && start !== '') {
-          where = {
-            ...where,
-            employeeID: {
-              ...where.employeeID,
-              [Op.gte]: start,
-            },
-          };
-        }
-
-        if (end !== undefined && end !== null && end !== '') {
-          where = {
-            ...where,
-            employeeID: {
-              ...where.employeeID,
-              [Op.lte]: end,
-            },
-          };
-        }
-      }
-
       if (
         filter.active === true ||
         filter.active === 'true' ||
@@ -189,7 +215,9 @@ module.exports = class AdminhistoryDBApi {
       ) {
         where = {
           ...where,
-          active: filter.active === true || filter.active === 'true',
+          active:
+            filter.active === true ||
+            filter.active === 'true',
         };
       }
 
@@ -218,23 +246,24 @@ module.exports = class AdminhistoryDBApi {
       }
     }
 
-    let { rows, count } = await db.adminhistory.findAndCountAll({
-      where,
-      include,
-      distinct: true,
-      limit: limit ? Number(limit) : undefined,
-      offset: offset ? Number(offset) : undefined,
-      order:
-        filter.field && filter.sort
+    let { rows, count } = await db.adminhistory.findAndCountAll(
+      {
+        where,
+        include,
+        distinct: true,
+        limit: limit ? Number(limit) : undefined,
+        offset: offset ? Number(offset) : undefined,
+        order: (filter.field && filter.sort)
           ? [[filter.field, filter.sort]]
           : [['createdAt', 'desc']],
-      transaction,
-    });
+        transaction,
+      },
+    );
 
-    //    rows = await this._fillWithRelationsAndFilesForRows(
-    //      rows,
-    //      options,
-    //    );
+//    rows = await this._fillWithRelationsAndFilesForRows(
+//      rows,
+//      options,
+//    );
 
     return { rows, count };
   }
@@ -246,13 +275,17 @@ module.exports = class AdminhistoryDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('adminhistory', 'id', query),
+          Utils.ilike(
+            'adminhistory',
+            'id',
+            query,
+          ),
         ],
       };
     }
 
     const records = await db.adminhistory.findAll({
-      attributes: ['id', 'id'],
+      attributes: [ 'id', 'id' ],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['id', 'ASC']],
@@ -263,4 +296,6 @@ module.exports = class AdminhistoryDBApi {
       label: record.id,
     }));
   }
+
 };
+

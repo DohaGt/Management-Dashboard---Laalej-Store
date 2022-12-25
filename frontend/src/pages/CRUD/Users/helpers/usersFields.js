@@ -1,50 +1,73 @@
+
 const usersFields = {
-  id: { type: 'id', label: 'ID' },
+	id: { type: 'id', label: 'ID' },
 
-  firstName: { type: 'string', label: 'First Name' },
+    firstName: { type: 'string', label: 'First Name',
 
-  lastName: { type: 'string', label: 'Last Name' },
+    },
 
-  phoneNumber: { type: 'string', label: 'Phone Number' },
+    lastName: { type: 'string', label: 'Last Name',
 
-  email: { type: 'string', label: 'E-mail' },
+    },
 
-  password: { type: 'string', label: 'Password' },
+    phoneNumber: { type: 'string', label: 'Phone Number',
 
-  emailVerified: { type: 'boolean', label: 'Email Verified' },
+    },
 
-  emailVerificationToken: { type: 'string', label: 'Verification Token' },
+    email: { type: 'string', label: 'E-mail',
 
-  emailVerificationTokenExpiresAt: {
-    type: 'datetime',
-    label: 'Verification Token Expiration',
-  },
+    },
 
-  passwordResetToken: { type: 'string', label: 'Password Reset Token' },
+    password: { type: 'string', label: 'Password',
 
-  passwordResetTokenExpiresAt: {
-    type: 'datetime',
-    label: 'Password Reset Token Expiration',
-  },
+    },
 
-  provider: { type: 'string', label: 'Provider' },
+    emailVerified: { type: 'boolean', label: 'Email Verified',
 
-  role: {
-    type: 'enum',
-    label: 'Role',
+    },
+
+    emailVerificationToken: { type: 'string', label: 'Verification Token',
+
+    },
+
+    emailVerificationTokenExpiresAt: { type: 'datetime', label: 'Verification Token Expiration',
+
+    },
+
+    passwordResetToken: { type: 'string', label: 'Password Reset Token',
+
+    },
+
+    passwordResetTokenExpiresAt: { type: 'datetime', label: 'Password Reset Token Expiration',
+
+    },
+
+    provider: { type: 'string', label: 'Provider',
+
+    },
+
+    role: { type: 'enum', label: 'Role',
 
     options: [
-      { value: 'admin', label: 'admin' },
 
-      { value: 'user', label: 'user' },
-    ],
-  },
+    { value: 'admin', label: 'admin' },
 
-  disabled: { type: 'boolean', label: 'Disabled' },
+    { value: 'user', label: 'user' },
 
-  avatar: { type: 'images', label: 'Avatar' },
+]
 
-  password: { type: 'string', label: 'Password' },
-};
+    },
+
+    disabled: { type: 'boolean', label: 'Disabled',
+
+    },
+
+    avatar: { type: 'images', label: 'Avatar',
+
+    },
+
+password: { type: 'string', label: 'Password' },
+
+}
 
 export default usersFields;

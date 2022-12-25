@@ -50,7 +50,10 @@ const CashierSelectItem = (props) => {
     },
   };
 
-  const { form, ...rest } = props;
+  const {
+    form,
+    ...rest
+  } = props;
 
   return (
     <React.Fragment>
@@ -63,10 +66,12 @@ const CashierSelectItem = (props) => {
       />
     </React.Fragment>
   );
-};
+}
 
 const select = (state) => ({
-  hasPermissionToCreate: state.cashier.hasPermissionToCreate,
+  hasPermissionToCreate: state.cashier.hasPermissionToCreate
 });
 
-export default connect(select)(CashierSelectItem);
+export default connect(select)(
+  CashierSelectItem,
+);

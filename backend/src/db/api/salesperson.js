@@ -1,3 +1,4 @@
+
 const db = require('../models');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
@@ -7,28 +8,37 @@ const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
 module.exports = class SalespersonDBApi {
+
   static async create(data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
-    const transaction = (options && options.transaction) || undefined;
+  const currentUser = (options && options.currentUser) || { id: null };
+  const transaction = (options && options.transaction) || undefined;
 
-    const salesperson = await db.salesperson.create(
-      {
-        id: data.id || undefined,
+  const salesperson = await db.salesperson.create(
+  {
+  id: data.id || undefined,
 
-        commission: data.commission || null,
-        employeeID: data.employeeID || null,
-        importHash: data.importHash || null,
-        createdById: currentUser.id,
-        updatedById: currentUser.id,
-      },
-      { transaction },
-    );
+    employeeID: data.employeeID
+    ||
+    null
+,
 
-    return salesperson;
+    commission: data.commission
+    ||
+    null
+,
+
+  importHash: data.importHash || null,
+  createdById: currentUser.id,
+  updatedById: currentUser.id,
+  },
+  { transaction },
+  );
+
+  return salesperson;
   }
 
   static async update(id, data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const salesperson = await db.salesperson.findByPk(id, {
@@ -37,33 +47,39 @@ module.exports = class SalespersonDBApi {
 
     await salesperson.update(
       {
-        commission: data.commission || null,
-        employeeID: data.employeeID || null,
+
+        employeeID: data.employeeID
+        ||
+        null
+,
+
+        commission: data.commission
+        ||
+        null
+,
+
         updatedById: currentUser.id,
       },
-      { transaction },
+      {transaction},
     );
 
     return salesperson;
   }
 
   static async remove(id, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const salesperson = await db.salesperson.findByPk(id, options);
 
-    await salesperson.update(
-      {
-        deletedBy: currentUser.id,
-      },
-      {
-        transaction,
-      },
-    );
+    await salesperson.update({
+      deletedBy: currentUser.id
+    }, {
+      transaction,
+    });
 
     await salesperson.destroy({
-      transaction,
+      transaction
     });
 
     return salesperson;
@@ -81,7 +97,7 @@ module.exports = class SalespersonDBApi {
       return salesperson;
     }
 
-    const output = salesperson.get({ plain: true });
+    const output = salesperson.get({plain: true});
 
     return output;
   }
@@ -97,7 +113,9 @@ module.exports = class SalespersonDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [];
+    let include = [
+
+    ];
 
     if (filter) {
       if (filter.id) {
@@ -105,30 +123,6 @@ module.exports = class SalespersonDBApi {
           ...where,
           ['id']: Utils.uuid(filter.id),
         };
-      }
-
-      if (filter.commissionRange) {
-        const [start, end] = filter.commissionRange;
-
-        if (start !== undefined && start !== null && start !== '') {
-          where = {
-            ...where,
-            commission: {
-              ...where.commission,
-              [Op.gte]: start,
-            },
-          };
-        }
-
-        if (end !== undefined && end !== null && end !== '') {
-          where = {
-            ...where,
-            commission: {
-              ...where.commission,
-              [Op.lte]: end,
-            },
-          };
-        }
       }
 
       if (filter.employeeIDRange) {
@@ -155,6 +149,30 @@ module.exports = class SalespersonDBApi {
         }
       }
 
+      if (filter.commissionRange) {
+        const [start, end] = filter.commissionRange;
+
+        if (start !== undefined && start !== null && start !== '') {
+          where = {
+            ...where,
+            commission: {
+              ...where.commission,
+              [Op.gte]: start,
+            },
+          };
+        }
+
+        if (end !== undefined && end !== null && end !== '') {
+          where = {
+            ...where,
+            commission: {
+              ...where.commission,
+              [Op.lte]: end,
+            },
+          };
+        }
+      }
+
       if (
         filter.active === true ||
         filter.active === 'true' ||
@@ -163,7 +181,9 @@ module.exports = class SalespersonDBApi {
       ) {
         where = {
           ...where,
-          active: filter.active === true || filter.active === 'true',
+          active:
+            filter.active === true ||
+            filter.active === 'true',
         };
       }
 
@@ -192,23 +212,24 @@ module.exports = class SalespersonDBApi {
       }
     }
 
-    let { rows, count } = await db.salesperson.findAndCountAll({
-      where,
-      include,
-      distinct: true,
-      limit: limit ? Number(limit) : undefined,
-      offset: offset ? Number(offset) : undefined,
-      order:
-        filter.field && filter.sort
+    let { rows, count } = await db.salesperson.findAndCountAll(
+      {
+        where,
+        include,
+        distinct: true,
+        limit: limit ? Number(limit) : undefined,
+        offset: offset ? Number(offset) : undefined,
+        order: (filter.field && filter.sort)
           ? [[filter.field, filter.sort]]
           : [['createdAt', 'desc']],
-      transaction,
-    });
+        transaction,
+      },
+    );
 
-    //    rows = await this._fillWithRelationsAndFilesForRows(
-    //      rows,
-    //      options,
-    //    );
+//    rows = await this._fillWithRelationsAndFilesForRows(
+//      rows,
+//      options,
+//    );
 
     return { rows, count };
   }
@@ -220,13 +241,17 @@ module.exports = class SalespersonDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('salesperson', 'id', query),
+          Utils.ilike(
+            'salesperson',
+            'id',
+            query,
+          ),
         ],
       };
     }
 
     const records = await db.salesperson.findAll({
-      attributes: ['id', 'id'],
+      attributes: [ 'id', 'id' ],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['id', 'ASC']],
@@ -237,4 +262,6 @@ module.exports = class SalespersonDBApi {
       label: record.id,
     }));
   }
+
 };
+

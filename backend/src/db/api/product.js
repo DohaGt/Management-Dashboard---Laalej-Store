@@ -1,3 +1,4 @@
+
 const db = require('../models');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
@@ -7,34 +8,67 @@ const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
 module.exports = class ProductDBApi {
+
   static async create(data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
-    const transaction = (options && options.transaction) || undefined;
+  const currentUser = (options && options.currentUser) || { id: null };
+  const transaction = (options && options.transaction) || undefined;
 
-    const product = await db.product.create(
-      {
-        id: data.id || undefined,
+  const product = await db.product.create(
+  {
+  id: data.id || undefined,
 
-        productCode: data.productCode || null,
-        description: data.description || null,
-        inDate: data.inDate || null,
-        quantityOnHand: data.quantityOnHand || null,
-        minQuantityOnHand: data.minQuantityOnHand || null,
-        price: data.price || null,
-        dicountRate: data.dicountRate || null,
-        supplierCode: data.supplierCode || null,
-        importHash: data.importHash || null,
-        createdById: currentUser.id,
-        updatedById: currentUser.id,
-      },
-      { transaction },
-    );
+    productCode: data.productCode
+    ||
+    null
+,
 
-    return product;
+    description: data.description
+    ||
+    null
+,
+
+    inDate: data.inDate
+    ||
+    null
+,
+
+    quantityOnHand: data.quantityOnHand
+    ||
+    null
+,
+
+    minQuantityOnHand: data.minQuantityOnHand
+    ||
+    null
+,
+
+    price: data.price
+    ||
+    null
+,
+
+    dicountRate: data.dicountRate
+    ||
+    null
+,
+
+    supplierCode: data.supplierCode
+    ||
+    null
+,
+
+  importHash: data.importHash || null,
+  createdById: currentUser.id,
+  updatedById: currentUser.id,
+  },
+  { transaction },
+  );
+
+  return product;
   }
 
   static async update(id, data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const product = await db.product.findByPk(id, {
@@ -43,39 +77,69 @@ module.exports = class ProductDBApi {
 
     await product.update(
       {
-        productCode: data.productCode || null,
-        description: data.description || null,
-        inDate: data.inDate || null,
-        quantityOnHand: data.quantityOnHand || null,
-        minQuantityOnHand: data.minQuantityOnHand || null,
-        price: data.price || null,
-        dicountRate: data.dicountRate || null,
-        supplierCode: data.supplierCode || null,
+
+        productCode: data.productCode
+        ||
+        null
+,
+
+        description: data.description
+        ||
+        null
+,
+
+        inDate: data.inDate
+        ||
+        null
+,
+
+        quantityOnHand: data.quantityOnHand
+        ||
+        null
+,
+
+        minQuantityOnHand: data.minQuantityOnHand
+        ||
+        null
+,
+
+        price: data.price
+        ||
+        null
+,
+
+        dicountRate: data.dicountRate
+        ||
+        null
+,
+
+        supplierCode: data.supplierCode
+        ||
+        null
+,
+
         updatedById: currentUser.id,
       },
-      { transaction },
+      {transaction},
     );
 
     return product;
   }
 
   static async remove(id, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const product = await db.product.findByPk(id, options);
 
-    await product.update(
-      {
-        deletedBy: currentUser.id,
-      },
-      {
-        transaction,
-      },
-    );
+    await product.update({
+      deletedBy: currentUser.id
+    }, {
+      transaction,
+    });
 
     await product.destroy({
-      transaction,
+      transaction
     });
 
     return product;
@@ -84,13 +148,16 @@ module.exports = class ProductDBApi {
   static async findBy(where, options) {
     const transaction = (options && options.transaction) || undefined;
 
-    const product = await db.product.findOne({ where }, { transaction });
+    const product = await db.product.findOne(
+      { where },
+      { transaction },
+    );
 
     if (!product) {
       return product;
     }
 
-    const output = product.get({ plain: true });
+    const output = product.get({plain: true});
 
     return output;
   }
@@ -106,7 +173,9 @@ module.exports = class ProductDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [];
+    let include = [
+
+    ];
 
     if (filter) {
       if (filter.id) {
@@ -119,7 +188,11 @@ module.exports = class ProductDBApi {
       if (filter.description) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('product', 'description', filter.description),
+          [Op.and]: Utils.ilike(
+            'product',
+            'description',
+            filter.description,
+          ),
         };
       }
 
@@ -299,7 +372,9 @@ module.exports = class ProductDBApi {
       ) {
         where = {
           ...where,
-          active: filter.active === true || filter.active === 'true',
+          active:
+            filter.active === true ||
+            filter.active === 'true',
         };
       }
 
@@ -328,23 +403,24 @@ module.exports = class ProductDBApi {
       }
     }
 
-    let { rows, count } = await db.product.findAndCountAll({
-      where,
-      include,
-      distinct: true,
-      limit: limit ? Number(limit) : undefined,
-      offset: offset ? Number(offset) : undefined,
-      order:
-        filter.field && filter.sort
+    let { rows, count } = await db.product.findAndCountAll(
+      {
+        where,
+        include,
+        distinct: true,
+        limit: limit ? Number(limit) : undefined,
+        offset: offset ? Number(offset) : undefined,
+        order: (filter.field && filter.sort)
           ? [[filter.field, filter.sort]]
           : [['createdAt', 'desc']],
-      transaction,
-    });
+        transaction,
+      },
+    );
 
-    //    rows = await this._fillWithRelationsAndFilesForRows(
-    //      rows,
-    //      options,
-    //    );
+//    rows = await this._fillWithRelationsAndFilesForRows(
+//      rows,
+//      options,
+//    );
 
     return { rows, count };
   }
@@ -356,13 +432,17 @@ module.exports = class ProductDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('product', 'id', query),
+          Utils.ilike(
+            'product',
+            'id',
+            query,
+          ),
         ],
       };
     }
 
     const records = await db.product.findAll({
-      attributes: ['id', 'id'],
+      attributes: [ 'id', 'id' ],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['id', 'ASC']],
@@ -373,4 +453,6 @@ module.exports = class ProductDBApi {
       label: record.id,
     }));
   }
+
 };
+

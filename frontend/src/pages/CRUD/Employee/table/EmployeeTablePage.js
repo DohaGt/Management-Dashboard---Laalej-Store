@@ -7,6 +7,6 @@ const EmployeeTablePage = () => {
       <EmployeeTable />
     </div>
   );
-};
+}
 
 export default EmployeeTablePage;

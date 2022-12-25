@@ -1,3 +1,4 @@
+
 const db = require('../models');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
@@ -7,34 +8,67 @@ const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
 module.exports = class EmployeeDBApi {
+
   static async create(data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
-    const transaction = (options && options.transaction) || undefined;
+  const currentUser = (options && options.currentUser) || { id: null };
+  const transaction = (options && options.transaction) || undefined;
 
-    const employee = await db.employee.create(
-      {
-        id: data.id || undefined,
+  const employee = await db.employee.create(
+  {
+  id: data.id || undefined,
 
-        employeeID: data.employeeID || null,
-        lastName: data.lastName || null,
-        firstName: data.firstName || null,
-        zipCode: data.zipCode || null,
-        phoneNumber: data.phoneNumber || null,
-        hireDate: data.hireDate || null,
-        salary: data.salary || null,
-        employeeType: data.employeeType || null,
-        importHash: data.importHash || null,
-        createdById: currentUser.id,
-        updatedById: currentUser.id,
-      },
-      { transaction },
-    );
+    employeeID: data.employeeID
+    ||
+    null
+,
 
-    return employee;
+    lastName: data.lastName
+    ||
+    null
+,
+
+    firstName: data.firstName
+    ||
+    null
+,
+
+    zipCode: data.zipCode
+    ||
+    null
+,
+
+    phoneNumber: data.phoneNumber
+    ||
+    null
+,
+
+    hireDate: data.hireDate
+    ||
+    null
+,
+
+    salary: data.salary
+    ||
+    null
+,
+
+    employeeType: data.employeeType
+    ||
+    null
+,
+
+  importHash: data.importHash || null,
+  createdById: currentUser.id,
+  updatedById: currentUser.id,
+  },
+  { transaction },
+  );
+
+  return employee;
   }
 
   static async update(id, data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const employee = await db.employee.findByPk(id, {
@@ -43,39 +77,69 @@ module.exports = class EmployeeDBApi {
 
     await employee.update(
       {
-        employeeID: data.employeeID || null,
-        lastName: data.lastName || null,
-        firstName: data.firstName || null,
-        zipCode: data.zipCode || null,
-        phoneNumber: data.phoneNumber || null,
-        hireDate: data.hireDate || null,
-        salary: data.salary || null,
-        employeeType: data.employeeType || null,
+
+        employeeID: data.employeeID
+        ||
+        null
+,
+
+        lastName: data.lastName
+        ||
+        null
+,
+
+        firstName: data.firstName
+        ||
+        null
+,
+
+        zipCode: data.zipCode
+        ||
+        null
+,
+
+        phoneNumber: data.phoneNumber
+        ||
+        null
+,
+
+        hireDate: data.hireDate
+        ||
+        null
+,
+
+        salary: data.salary
+        ||
+        null
+,
+
+        employeeType: data.employeeType
+        ||
+        null
+,
+
         updatedById: currentUser.id,
       },
-      { transaction },
+      {transaction},
     );
 
     return employee;
   }
 
   static async remove(id, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const employee = await db.employee.findByPk(id, options);
 
-    await employee.update(
-      {
-        deletedBy: currentUser.id,
-      },
-      {
-        transaction,
-      },
-    );
+    await employee.update({
+      deletedBy: currentUser.id
+    }, {
+      transaction,
+    });
 
     await employee.destroy({
-      transaction,
+      transaction
     });
 
     return employee;
@@ -84,13 +148,16 @@ module.exports = class EmployeeDBApi {
   static async findBy(where, options) {
     const transaction = (options && options.transaction) || undefined;
 
-    const employee = await db.employee.findOne({ where }, { transaction });
+    const employee = await db.employee.findOne(
+      { where },
+      { transaction },
+    );
 
     if (!employee) {
       return employee;
     }
 
-    const output = employee.get({ plain: true });
+    const output = employee.get({plain: true});
 
     return output;
   }
@@ -106,7 +173,9 @@ module.exports = class EmployeeDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [];
+    let include = [
+
+    ];
 
     if (filter) {
       if (filter.id) {
@@ -119,21 +188,33 @@ module.exports = class EmployeeDBApi {
       if (filter.lastName) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('employee', 'lastName', filter.lastName),
+          [Op.and]: Utils.ilike(
+            'employee',
+            'lastName',
+            filter.lastName,
+          ),
         };
       }
 
       if (filter.firstName) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('employee', 'firstName', filter.firstName),
+          [Op.and]: Utils.ilike(
+            'employee',
+            'firstName',
+            filter.firstName,
+          ),
         };
       }
 
       if (filter.phoneNumber) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('employee', 'phoneNumber', filter.phoneNumber),
+          [Op.and]: Utils.ilike(
+            'employee',
+            'phoneNumber',
+            filter.phoneNumber,
+          ),
         };
       }
 
@@ -241,7 +322,9 @@ module.exports = class EmployeeDBApi {
       ) {
         where = {
           ...where,
-          active: filter.active === true || filter.active === 'true',
+          active:
+            filter.active === true ||
+            filter.active === 'true',
         };
       }
 
@@ -277,23 +360,24 @@ module.exports = class EmployeeDBApi {
       }
     }
 
-    let { rows, count } = await db.employee.findAndCountAll({
-      where,
-      include,
-      distinct: true,
-      limit: limit ? Number(limit) : undefined,
-      offset: offset ? Number(offset) : undefined,
-      order:
-        filter.field && filter.sort
+    let { rows, count } = await db.employee.findAndCountAll(
+      {
+        where,
+        include,
+        distinct: true,
+        limit: limit ? Number(limit) : undefined,
+        offset: offset ? Number(offset) : undefined,
+        order: (filter.field && filter.sort)
           ? [[filter.field, filter.sort]]
           : [['createdAt', 'desc']],
-      transaction,
-    });
+        transaction,
+      },
+    );
 
-    //    rows = await this._fillWithRelationsAndFilesForRows(
-    //      rows,
-    //      options,
-    //    );
+//    rows = await this._fillWithRelationsAndFilesForRows(
+//      rows,
+//      options,
+//    );
 
     return { rows, count };
   }
@@ -305,13 +389,17 @@ module.exports = class EmployeeDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('employee', 'id', query),
+          Utils.ilike(
+            'employee',
+            'id',
+            query,
+          ),
         ],
       };
     }
 
     const records = await db.employee.findAll({
-      attributes: ['id', 'id'],
+      attributes: [ 'id', 'id' ],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['id', 'ASC']],
@@ -322,4 +410,6 @@ module.exports = class EmployeeDBApi {
       label: record.id,
     }));
   }
+
 };
+

@@ -1,19 +1,27 @@
+
 const salespersonFields = {
-  id: { type: 'id', label: 'ID' },
+	id: { type: 'id', label: 'ID' },
 
-  commission: {
-    type: 'decimal',
-    label: 'Commission',
+    employeeID: { type: 'int', label: 'Employee ID',
 
-    options: [{ value: 'value', label: 'value' }],
-  },
+    options: [
 
-  employeeID: {
-    type: 'int',
-    label: 'Employee ID',
+    { value: 'value', label: 'value' },
 
-    options: [{ value: 'value', label: 'value' }],
-  },
-};
+]
+
+    },
+
+    commission: { type: 'decimal', label: 'Commission',
+
+    options: [
+
+    { value: 'value', label: 'value' },
+
+]
+
+    },
+
+}
 
 export default salespersonFields;

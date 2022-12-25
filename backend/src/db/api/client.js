@@ -1,3 +1,4 @@
+
 const db = require('../models');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
@@ -7,34 +8,66 @@ const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
 module.exports = class ClientDBApi {
+
   static async create(data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
-    const transaction = (options && options.transaction) || undefined;
+  const currentUser = (options && options.currentUser) || { id: null };
+  const transaction = (options && options.transaction) || undefined;
 
-    const client = await db.client.create(
-      {
-        id: data.id || undefined,
+  const client = await db.client.create(
+  {
+  id: data.id || undefined,
 
-        clientCode: data.clientCode || null,
-        lastName: data.lastName || null,
-        firstName: data.firstName || null,
-        zipCode: data.zipCode || null,
-        phoneNumber: data.phoneNumber || null,
-        email: data.email || null,
-        balance: data.balance || null,
-        employeeID: data.employeeID || null,
-        importHash: data.importHash || null,
-        createdById: currentUser.id,
-        updatedById: currentUser.id,
-      },
-      { transaction },
-    );
+    clientCode: data.clientCode
+    ||
+    null
+,
 
-    return client;
+    lastName: data.lastName
+    ||
+    null
+,
+
+    firstName: data.firstName
+    ||
+    null
+,
+
+    zipCode: data.zipCode
+    ||
+    null
+,
+
+    phoneNumber: data.phoneNumber
+    ||
+    null
+,
+
+    email: data.email
+    ||
+    null
+,
+
+    balance: data.balance
+    ||
+    null
+,
+
+  importHash: data.importHash || null,
+  createdById: currentUser.id,
+  updatedById: currentUser.id,
+  },
+  { transaction },
+  );
+
+    await client.setEmployeeID(data.employeeID || null, {
+    transaction,
+    });
+
+  return client;
   }
 
   static async update(id, data, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const client = await db.client.findByPk(id, {
@@ -43,39 +76,68 @@ module.exports = class ClientDBApi {
 
     await client.update(
       {
-        clientCode: data.clientCode || null,
-        lastName: data.lastName || null,
-        firstName: data.firstName || null,
-        zipCode: data.zipCode || null,
-        phoneNumber: data.phoneNumber || null,
-        email: data.email || null,
-        balance: data.balance || null,
-        employeeID: data.employeeID || null,
+
+        clientCode: data.clientCode
+        ||
+        null
+,
+
+        lastName: data.lastName
+        ||
+        null
+,
+
+        firstName: data.firstName
+        ||
+        null
+,
+
+        zipCode: data.zipCode
+        ||
+        null
+,
+
+        phoneNumber: data.phoneNumber
+        ||
+        null
+,
+
+        email: data.email
+        ||
+        null
+,
+
+        balance: data.balance
+        ||
+        null
+,
+
         updatedById: currentUser.id,
       },
-      { transaction },
+      {transaction},
     );
+
+    await client.setEmployeeID(data.employeeID || null, {
+      transaction,
+    });
 
     return client;
   }
 
   static async remove(id, options) {
-    const currentUser = (options && options.currentUser) || { id: null };
+    const currentUser = (options && options.currentUser) || {id: null};
     const transaction = (options && options.transaction) || undefined;
 
     const client = await db.client.findByPk(id, options);
 
-    await client.update(
-      {
-        deletedBy: currentUser.id,
-      },
-      {
-        transaction,
-      },
-    );
+    await client.update({
+      deletedBy: currentUser.id
+    }, {
+      transaction,
+    });
 
     await client.destroy({
-      transaction,
+      transaction
     });
 
     return client;
@@ -84,13 +146,20 @@ module.exports = class ClientDBApi {
   static async findBy(where, options) {
     const transaction = (options && options.transaction) || undefined;
 
-    const client = await db.client.findOne({ where }, { transaction });
+    const client = await db.client.findOne(
+      { where },
+      { transaction },
+    );
 
     if (!client) {
       return client;
     }
 
-    const output = client.get({ plain: true });
+    const output = client.get({plain: true});
+
+    output.employeeID = await client.getEmployeeID({
+      transaction
+    });
 
     return output;
   }
@@ -106,7 +175,14 @@ module.exports = class ClientDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [];
+    let include = [
+
+      {
+        model: db.employee,
+        as: 'employeeID',
+      },
+
+    ];
 
     if (filter) {
       if (filter.id) {
@@ -119,28 +195,44 @@ module.exports = class ClientDBApi {
       if (filter.lastName) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('client', 'lastName', filter.lastName),
+          [Op.and]: Utils.ilike(
+            'client',
+            'lastName',
+            filter.lastName,
+          ),
         };
       }
 
       if (filter.firstName) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('client', 'firstName', filter.firstName),
+          [Op.and]: Utils.ilike(
+            'client',
+            'firstName',
+            filter.firstName,
+          ),
         };
       }
 
       if (filter.phoneNumber) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('client', 'phoneNumber', filter.phoneNumber),
+          [Op.and]: Utils.ilike(
+            'client',
+            'phoneNumber',
+            filter.phoneNumber,
+          ),
         };
       }
 
       if (filter.email) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('client', 'email', filter.email),
+          [Op.and]: Utils.ilike(
+            'client',
+            'email',
+            filter.email,
+          ),
         };
       }
 
@@ -216,30 +308,6 @@ module.exports = class ClientDBApi {
         }
       }
 
-      if (filter.employeeIDRange) {
-        const [start, end] = filter.employeeIDRange;
-
-        if (start !== undefined && start !== null && start !== '') {
-          where = {
-            ...where,
-            employeeID: {
-              ...where.employeeID,
-              [Op.gte]: start,
-            },
-          };
-        }
-
-        if (end !== undefined && end !== null && end !== '') {
-          where = {
-            ...where,
-            employeeID: {
-              ...where.employeeID,
-              [Op.lte]: end,
-            },
-          };
-        }
-      }
-
       if (
         filter.active === true ||
         filter.active === 'true' ||
@@ -248,7 +316,20 @@ module.exports = class ClientDBApi {
       ) {
         where = {
           ...where,
-          active: filter.active === true || filter.active === 'true',
+          active:
+            filter.active === true ||
+            filter.active === 'true',
+        };
+      }
+
+      if (filter.employeeID) {
+        var listItems = filter.employeeID.split('|').map(item => {
+          return  Utils.uuid(item)
+        });
+
+        where = {
+          ...where,
+          employeeIDId: {[Op.or]: listItems}
         };
       }
 
@@ -277,23 +358,24 @@ module.exports = class ClientDBApi {
       }
     }
 
-    let { rows, count } = await db.client.findAndCountAll({
-      where,
-      include,
-      distinct: true,
-      limit: limit ? Number(limit) : undefined,
-      offset: offset ? Number(offset) : undefined,
-      order:
-        filter.field && filter.sort
+    let { rows, count } = await db.client.findAndCountAll(
+      {
+        where,
+        include,
+        distinct: true,
+        limit: limit ? Number(limit) : undefined,
+        offset: offset ? Number(offset) : undefined,
+        order: (filter.field && filter.sort)
           ? [[filter.field, filter.sort]]
           : [['createdAt', 'desc']],
-      transaction,
-    });
+        transaction,
+      },
+    );
 
-    //    rows = await this._fillWithRelationsAndFilesForRows(
-    //      rows,
-    //      options,
-    //    );
+//    rows = await this._fillWithRelationsAndFilesForRows(
+//      rows,
+//      options,
+//    );
 
     return { rows, count };
   }
@@ -305,13 +387,17 @@ module.exports = class ClientDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('client', 'id', query),
+          Utils.ilike(
+            'client',
+            'id',
+            query,
+          ),
         ],
       };
     }
 
     const records = await db.client.findAll({
-      attributes: ['id', 'id'],
+      attributes: [ 'id', 'id' ],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['id', 'ASC']],
@@ -322,4 +408,6 @@ module.exports = class ClientDBApi {
       label: record.id,
     }));
   }
+
 };
+

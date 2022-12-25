@@ -1,28 +1,41 @@
+
 const invoiceFields = {
-  id: { type: 'id', label: 'ID' },
+	id: { type: 'id', label: 'ID' },
 
-  invoiceNumber: { type: 'int', label: 'Invoice Number' },
+    invoiceNumber: { type: 'int', label: 'Invoice Number',
 
-  clientCode: {
-    type: 'int',
-    label: 'Client Code',
+    },
 
-    options: [{ value: 'value', label: 'value' }],
-  },
+    clientCode: { type: 'int', label: 'Client Code',
 
-  invoiceDate: {
-    type: 'datetime',
-    label: 'Invoice Date',
+    options: [
 
-    options: [{ value: 'value', label: 'value' }],
-  },
+    { value: 'value', label: 'value' },
 
-  employeeID: {
-    type: 'int',
-    label: 'Employee ID',
+]
 
-    options: [{ value: 'value', label: 'value' }],
-  },
-};
+    },
+
+    invoiceDate: { type: 'datetime', label: 'Invoice Date',
+
+    options: [
+
+    { value: 'value', label: 'value' },
+
+]
+
+    },
+
+    employeeID: { type: 'int', label: 'Employee ID',
+
+    options: [
+
+    { value: 'value', label: 'value' },
+
+]
+
+    },
+
+}
 
 export default invoiceFields;

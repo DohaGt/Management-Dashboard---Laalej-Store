@@ -1,56 +1,81 @@
+
 const clientFields = {
-  id: { type: 'id', label: 'ID' },
+	id: { type: 'id', label: 'ID' },
 
-  clientCode: { type: 'int', label: 'Client Code' },
+    clientCode: { type: 'int', label: 'Client Code',
 
-  lastName: {
-    type: 'string',
-    label: 'Last Name',
+    },
 
-    options: [{ value: 'value', label: 'value' }],
-  },
+    lastName: { type: 'string', label: 'Last Name',
 
-  firstName: {
-    type: 'string',
-    label: 'First Name',
+    options: [
 
-    options: [{ value: 'value', label: 'value' }],
-  },
+    { value: 'value', label: 'value' },
 
-  zipCode: {
-    type: 'int',
-    label: 'Zip Code',
+]
 
-    options: [{ value: 'value', label: 'value' }],
-  },
+    },
 
-  phoneNumber: {
-    type: 'string',
-    label: 'Phone Number',
+    firstName: { type: 'string', label: 'First Name',
 
-    options: [{ value: 'value', label: 'value' }],
-  },
+    options: [
 
-  email: {
-    type: 'string',
-    label: 'Email',
+    { value: 'value', label: 'value' },
 
-    options: [{ value: 'value', label: 'value' }],
-  },
+]
 
-  balance: {
-    type: 'decimal',
-    label: 'Balance',
+    },
 
-    options: [{ value: 'value', label: 'value' }],
-  },
+    zipCode: { type: 'int', label: 'Zip Code',
 
-  employeeID: {
-    type: 'int',
-    label: 'Employee ID',
+    options: [
 
-    options: [{ value: 'value', label: 'value' }],
-  },
-};
+    { value: 'value', label: 'value' },
+
+]
+
+    },
+
+    phoneNumber: { type: 'string', label: 'Phone Number',
+
+    options: [
+
+    { value: 'value', label: 'value' },
+
+]
+
+    },
+
+    email: { type: 'string', label: 'Email',
+
+    options: [
+
+    { value: 'value', label: 'value' },
+
+]
+
+    },
+
+    balance: { type: 'decimal', label: 'Balance',
+
+    options: [
+
+    { value: 'value', label: 'value' },
+
+]
+
+    },
+
+    employeeID: { type: 'relation_one', label: 'Employee ID',
+
+    options: [
+
+    { value: 'value', label: 'value' },
+
+]
+
+    },
+
+}
 
 export default clientFields;

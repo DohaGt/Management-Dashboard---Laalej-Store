@@ -5,54 +5,69 @@ module.exports = class AdministratorService {
   static async create(data, currentUser) {
     const transaction = await db.sequelize.transaction();
     try {
-      await AdministratorDBApi.create(data, {
-        currentUser,
-        transaction,
-      });
+      await AdministratorDBApi.create(
+        data,
+        {
+          currentUser,
+          transaction,
+        },
+      );
 
       await transaction.commit();
     } catch (error) {
       await transaction.rollback();
       throw error;
     }
-  }
+  };
   static async update(data, id, currentUser) {
     const transaction = await db.sequelize.transaction();
     try {
       let administrator = await AdministratorDBApi.findBy(
-        { id },
-        { transaction },
+        {id},
+        {transaction},
       );
 
       if (!administrator) {
-        throw new ValidationError('administratorNotFound');
+        throw new ValidationError(
+          'administratorNotFound',
+        );
       }
 
-      await AdministratorDBApi.update(id, data, {
-        currentUser,
-        transaction,
-      });
+      await AdministratorDBApi.update(
+        id,
+        data,
+        {
+          currentUser,
+          transaction,
+        },
+      );
 
       await transaction.commit();
       return administrator;
+
     } catch (error) {
       await transaction.rollback();
       throw error;
     }
-  }
+  };
 
   static async remove(id, currentUser) {
     const transaction = await db.sequelize.transaction();
 
     try {
       if (currentUser.role !== 'admin') {
-        throw new ValidationError('errors.forbidden.message');
+        throw new ValidationError(
+          'errors.forbidden.message',
+        );
       }
 
-      await AdministratorDBApi.remove(id, {
-        currentUser,
-        transaction,
-      });
+      await AdministratorDBApi.remove(
+        id,
+        {
+          currentUser,
+          transaction,
+        },
+      );
 
       await transaction.commit();
     } catch (error) {
@@ -61,3 +76,4 @@ module.exports = class AdministratorService {
     }
   }
 };
+

@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const moment = require('moment');
 
-module.exports = function (sequelize, DataTypes) {
+module.exports = function(sequelize, DataTypes) {
   const line = sequelize.define(
     'line',
     {
@@ -14,24 +14,29 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
       },
 
-      quantity: {
+lineNumber: {
         type: DataTypes.INTEGER,
+
       },
 
-      lineNumber: {
+invoiceNumber: {
         type: DataTypes.INTEGER,
+
       },
 
-      unitPrice: {
+clientCode: {
+        type: DataTypes.INTEGER,
+
+      },
+
+quantity: {
+        type: DataTypes.INTEGER,
+
+      },
+
+unitPrice: {
         type: DataTypes.DECIMAL,
-      },
 
-      invoiceNumber: {
-        type: DataTypes.INTEGER,
-      },
-
-      clientCode: {
-        type: DataTypes.INTEGER,
       },
 
       importHash: {
@@ -48,6 +53,7 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   line.associate = (db) => {
+
     db.line.belongsTo(db.users, {
       as: 'createdBy',
     });
@@ -59,3 +65,4 @@ module.exports = function (sequelize, DataTypes) {
 
   return line;
 };
+

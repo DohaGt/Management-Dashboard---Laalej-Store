@@ -7,6 +7,6 @@ const CashierTablePage = () => {
       <CashierTable />
     </div>
   );
-};
+}
 
 export default CashierTablePage;

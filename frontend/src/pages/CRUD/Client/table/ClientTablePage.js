@@ -7,6 +7,6 @@ const ClientTablePage = () => {
       <ClientTable />
     </div>
   );
-};
+}
 
 export default ClientTablePage;
