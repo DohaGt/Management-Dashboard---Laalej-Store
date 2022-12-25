@@ -17,11 +17,6 @@ module.exports = class AdministratorDBApi {
   {
   id: data.id || undefined,
 
-    employeeID: data.employeeID
-    ||
-    null
-,
-
     password: data.password
     ||
     null
@@ -33,6 +28,10 @@ module.exports = class AdministratorDBApi {
   },
   { transaction },
   );
+
+    await administrator.setEmployeeID(data.employeeID || null, {
+    transaction,
+    });
 
   return administrator;
   }
@@ -48,11 +47,6 @@ module.exports = class AdministratorDBApi {
     await administrator.update(
       {
 
-        employeeID: data.employeeID
-        ||
-        null
-,
-
         password: data.password
         ||
         null
@@ -62,6 +56,10 @@ module.exports = class AdministratorDBApi {
       },
       {transaction},
     );
+
+    await administrator.setEmployeeID(data.employeeID || null, {
+      transaction,
+    });
 
     return administrator;
   }
@@ -99,6 +97,10 @@ module.exports = class AdministratorDBApi {
 
     const output = administrator.get({plain: true});
 
+    output.employeeID = await administrator.getEmployeeID({
+      transaction
+    });
+
     return output;
   }
 
@@ -114,6 +116,11 @@ module.exports = class AdministratorDBApi {
     const transaction = (options && options.transaction) || undefined;
     let where = {};
     let include = [
+
+      {
+        model: db.employee,
+        as: 'employeeID',
+      },
 
     ];
 
@@ -136,30 +143,6 @@ module.exports = class AdministratorDBApi {
         };
       }
 
-      if (filter.employeeIDRange) {
-        const [start, end] = filter.employeeIDRange;
-
-        if (start !== undefined && start !== null && start !== '') {
-          where = {
-            ...where,
-            employeeID: {
-              ...where.employeeID,
-              [Op.gte]: start,
-            },
-          };
-        }
-
-        if (end !== undefined && end !== null && end !== '') {
-          where = {
-            ...where,
-            employeeID: {
-              ...where.employeeID,
-              [Op.lte]: end,
-            },
-          };
-        }
-      }
-
       if (
         filter.active === true ||
         filter.active === 'true' ||
@@ -171,6 +154,17 @@ module.exports = class AdministratorDBApi {
           active:
             filter.active === true ||
             filter.active === 'true',
+        };
+      }
+
+      if (filter.employeeID) {
+        var listItems = filter.employeeID.split('|').map(item => {
+          return  Utils.uuid(item)
+        });
+
+        where = {
+          ...where,
+          employeeIDId: {[Op.or]: listItems}
         };
       }
 

@@ -15,10 +15,6 @@ const router = express.Router();
  *        type: object
  *        properties:
 
- *          employeeID:
- *            type: integer
- *            format: int64
-
  */
 
 /**

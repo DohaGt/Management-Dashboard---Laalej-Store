@@ -52,17 +52,16 @@ module.exports = class ClientDBApi {
     null
 ,
 
-    employeeID: data.employeeID
-    ||
-    null
-,
-
   importHash: data.importHash || null,
   createdById: currentUser.id,
   updatedById: currentUser.id,
   },
   { transaction },
   );
+
+    await client.setEmployeeID(data.employeeID || null, {
+    transaction,
+    });
 
   return client;
   }
@@ -113,15 +112,14 @@ module.exports = class ClientDBApi {
         null
 ,
 
-        employeeID: data.employeeID
-        ||
-        null
-,
-
         updatedById: currentUser.id,
       },
       {transaction},
     );
+
+    await client.setEmployeeID(data.employeeID || null, {
+      transaction,
+    });
 
     return client;
   }
@@ -159,6 +157,10 @@ module.exports = class ClientDBApi {
 
     const output = client.get({plain: true});
 
+    output.employeeID = await client.getEmployeeID({
+      transaction
+    });
+
     return output;
   }
 
@@ -174,6 +176,11 @@ module.exports = class ClientDBApi {
     const transaction = (options && options.transaction) || undefined;
     let where = {};
     let include = [
+
+      {
+        model: db.employee,
+        as: 'employeeID',
+      },
 
     ];
 
@@ -301,30 +308,6 @@ module.exports = class ClientDBApi {
         }
       }
 
-      if (filter.employeeIDRange) {
-        const [start, end] = filter.employeeIDRange;
-
-        if (start !== undefined && start !== null && start !== '') {
-          where = {
-            ...where,
-            employeeID: {
-              ...where.employeeID,
-              [Op.gte]: start,
-            },
-          };
-        }
-
-        if (end !== undefined && end !== null && end !== '') {
-          where = {
-            ...where,
-            employeeID: {
-              ...where.employeeID,
-              [Op.lte]: end,
-            },
-          };
-        }
-      }
-
       if (
         filter.active === true ||
         filter.active === 'true' ||
@@ -336,6 +319,17 @@ module.exports = class ClientDBApi {
           active:
             filter.active === true ||
             filter.active === 'true',
+        };
+      }
+
+      if (filter.employeeID) {
+        var listItems = filter.employeeID.split('|').map(item => {
+          return  Utils.uuid(item)
+        });
+
+        where = {
+          ...where,
+          employeeIDId: {[Op.or]: listItems}
         };
       }
 

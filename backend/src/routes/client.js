@@ -34,9 +34,6 @@ const router = express.Router();
  *          zipCode:
  *            type: integer
  *            format: int64
- *          employeeID:
- *            type: integer
- *            format: int64
 
  *          balance:
  *            type: integer

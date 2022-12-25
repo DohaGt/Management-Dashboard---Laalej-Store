@@ -49,11 +49,6 @@ balance: {
 
       },
 
-employeeID: {
-        type: DataTypes.INTEGER,
-
-      },
-
       importHash: {
         type: DataTypes.STRING(255),
         allowNull: true,
@@ -68,6 +63,14 @@ employeeID: {
   );
 
   client.associate = (db) => {
+
+    db.client.belongsTo(db.employee, {
+      as: 'employeeID',
+      foreignKey: {
+        name: 'employeeIDId',
+      },
+      constraints: false,
+    });
 
     db.client.belongsTo(db.users, {
       as: 'createdBy',

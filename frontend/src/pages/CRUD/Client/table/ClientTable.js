@@ -1,6 +1,9 @@
 // eslint-disable-next-line
 import * as dataFormat from 'pages/CRUD/Client/table/ClientDataFormatters';
 
+// eslint-disable-next-line
+import * as employeeDataFormat from 'pages/CRUD/Employee/table/EmployeeDataFormatters';
+
 import actions from 'actions/client/clientListActions';
 import React from 'react';
 import {Link} from 'react-router-dom';
@@ -56,9 +59,9 @@ const ClientTable = () => {
 
   const [filters, setFilters] = React.useState([
     {label: 'Last Name', title: 'lastName'},{label: 'First Name', title: 'firstName'},{label: 'Phone Number', title: 'phoneNumber'},{label: 'Email', title: 'email'},
-          {label: 'Client Code', title: 'clientCode', number: 'true'},{label: 'Zip Code', title: 'zipCode', number: 'true'},{label: 'Employee ID', title: 'employeeID', number: 'true'},
+          {label: 'Client Code', title: 'clientCode', number: 'true'},{label: 'Zip Code', title: 'zipCode', number: 'true'},
           {label: 'Balance', title: 'balance', number: 'true'},
-
+          {label: 'Employee ID', title: 'employeeID'},
   ]);
 
   const [filterItems, setFilterItems] = React.useState([]);
@@ -236,7 +239,9 @@ const ClientTable = () => {
 
       { field: "employeeID",
 
-        flex: 0.6,
+        sortable: false,
+        renderCell: (params) => employeeDataFormat.listFormatter(params.row[params.field], history, 'employee'),
+        flex: 1,
 
       headerName: "Employee ID"
       },

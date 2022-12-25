@@ -66,7 +66,7 @@ const clientFields = {
 
     },
 
-    employeeID: { type: 'int', label: 'Employee ID',
+    employeeID: { type: 'relation_one', label: 'Employee ID',
 
     options: [
 

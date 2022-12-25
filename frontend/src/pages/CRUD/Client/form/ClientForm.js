@@ -25,6 +25,8 @@ import PreparedValues from 'components/FormItems/preparedValues';
 import FormValidations from 'components/FormItems/formValidations';
 import Widget from 'components/Widget';
 
+import EmployeeSelectItem from 'pages/CRUD/Employee/helpers/EmployeeSelectItem';
+
 const ClientForm = (props) => {
 
   const {
@@ -127,9 +129,11 @@ const ClientForm = (props) => {
       </Grid>
 
       <Grid item>
-        <InputFormItem
-          name={'employeeID'}
-          schema={clientFields}
+        <EmployeeSelectItem
+        name={'employeeID'}
+        schema={clientFields}
+        showCreate={!modal}
+        form={form}
         />
       </Grid>
 

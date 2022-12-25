@@ -14,11 +14,6 @@ module.exports = function(sequelize, DataTypes) {
         primaryKey: true,
       },
 
-employeeID: {
-        type: DataTypes.INTEGER,
-
-      },
-
 password: {
         type: DataTypes.TEXT,
 
@@ -38,6 +33,14 @@ password: {
   );
 
   administrator.associate = (db) => {
+
+    db.administrator.belongsTo(db.employee, {
+      as: 'employeeID',
+      foreignKey: {
+        name: 'employeeIDId',
+      },
+      constraints: false,
+    });
 
     db.administrator.belongsTo(db.users, {
       as: 'createdBy',

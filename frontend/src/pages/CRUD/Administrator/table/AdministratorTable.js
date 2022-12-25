@@ -1,6 +1,9 @@
 // eslint-disable-next-line
 import * as dataFormat from 'pages/CRUD/Administrator/table/AdministratorDataFormatters';
 
+// eslint-disable-next-line
+import * as employeeDataFormat from 'pages/CRUD/Employee/table/EmployeeDataFormatters';
+
 import actions from 'actions/administrator/administratorListActions';
 import React from 'react';
 import {Link} from 'react-router-dom';
@@ -56,8 +59,7 @@ const AdministratorTable = () => {
 
   const [filters, setFilters] = React.useState([
 
-          {label: 'Employee ID', title: 'employeeID', number: 'true'},
-
+          {label: 'Employee ID', title: 'employeeID'},
   ]);
 
   const [filterItems, setFilterItems] = React.useState([]);
@@ -186,7 +188,9 @@ const AdministratorTable = () => {
 
       { field: "employeeID",
 
-        flex: 0.6,
+        sortable: false,
+        renderCell: (params) => employeeDataFormat.listFormatter(params.row[params.field], history, 'employee'),
+        flex: 1,
 
       headerName: "Employee ID"
       },
