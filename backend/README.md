@@ -1,5 +1,5 @@
 
-#Management Dashboard - Laalej Store - template backend,
+#Management Dashboard - Laalej Store 
 
 #### Run App on local machine:
 
